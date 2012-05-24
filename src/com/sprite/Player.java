@@ -2,7 +2,7 @@ package com.sprite;
 
 import javax.microedition.lcdui.Image;
 
-public class Player extends Tank
+public class Player extends MoveObject
 {
 
 	public Player(Image image, int frameWidth, int frameHeight)
@@ -20,4 +20,5 @@ public class Player extends Tank
 	{
 		
 	}
+	
 }

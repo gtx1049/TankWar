@@ -2,7 +2,7 @@ package com.sprite;
 
 import javax.microedition.lcdui.Image;
 
-public class Enemy extends Tank
+public class Enemy extends MoveObject
 {
 
 	public Enemy(Image image, int frameWidth, int frameHeight)
@@ -11,7 +11,7 @@ public class Enemy extends Tank
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void aiAction()
+	public void doAction()
 	{
 		
 	}
