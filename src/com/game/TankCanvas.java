@@ -24,12 +24,12 @@ public class TankCanvas extends GameCanvas implements Runnable
 	
 	private int status;
 	
-	private boolean onrun;
+	private boolean onrun;	
 	
 	protected TankCanvas(boolean suppressKeyEvents)
 	{
 		super(suppressKeyEvents);
-		// TODO Auto-generated constructor stub
+		// TODO Auto-generated constructor st ub
 		new Thread(this).start();
 	}
 
@@ -53,10 +53,9 @@ public class TankCanvas extends GameCanvas implements Runnable
 			{
 				Enemy e = (Enemy)enemys.elementAt(i);
 				
-				e.aiAction();
+				e.doAction();
 			}
 			
-			player.waitKeyPress();
 			player.doAction();
 			
 			

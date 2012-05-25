@@ -40,6 +40,30 @@ public class MoveObject extends Sprite
 			break;
 		}
 	}
+	
+	public void undo()
+	{
+		switch(direction)
+		{
+		case Const.UP:
+			move(0, speed);
+			break;
+		case Const.DOWN:
+			move(0, -speed);
+			break;
+		case Const.LEFT:
+			move(speed, 0);
+			break;
+		case Const.RIGHT:
+			move(-speed, 0);
+			break;
+		}
+	}
+	
+	public void initDirection(int direction)
+	{
+		this.direction = direction;
+	}
 
 	public int getSpeed() 
 	{
@@ -58,6 +82,10 @@ public class MoveObject extends Sprite
 
 	public void setDirection(int direction) 
 	{
+		
+		
+		int time = direction - this.direction;
+				
 		this.direction = direction;
 	}
 	

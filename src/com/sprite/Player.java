@@ -11,14 +11,4 @@ public class Player extends MoveObject
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void waitKeyPress()
-	{
-		
-	}
-	
-	public void doAction()
-	{
-		
-	}
-	
 }

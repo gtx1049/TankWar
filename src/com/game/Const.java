@@ -23,9 +23,9 @@ public class Const
 	public static final int NORMALCANNON = 13;
 	
 	public static final int UP = 14;
-	public static final int DOWN = 15;
-	public static final int LEFT = 16;
-	public static final int RIGHT = 17;
+	public static final int RIGHT = 15;
+	public static final int DOWN = 16;
+	public static final int LEFT = 17;
 	public static final int CENTER = 18;
 
 	public static final int WHITE = 19;
