@@ -12,3 +12,5 @@ public class Player extends MoveObject
 	}
 	
 }
+
+

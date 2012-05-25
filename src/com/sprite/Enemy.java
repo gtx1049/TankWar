@@ -28,8 +28,10 @@ public class Enemy extends MoveObject
 		if (random.nextInt() % 3 == 0)
 		{
 			Shell shell = new Shell(image, width, height);
+			
 			shell.setPosition(getX(), getY());
 			shell.setDirection(getDirection());
+			
 		}
 		return null;
 	}
