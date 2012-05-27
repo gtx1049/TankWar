@@ -11,6 +11,10 @@ public class MoveObject extends Sprite
 	protected int speed;
 	protected int direction;
 	
+	protected boolean isMoving = false;
+	
+	protected int nextCordinate = -1;
+	
 	public MoveObject(Image image, int frameWidth, int frameHeight)
 	{
 		super(image, frameWidth, frameHeight);
@@ -22,22 +26,58 @@ public class MoveObject extends Sprite
 		move();
 	}
 	
+	
+	public void setMoving(boolean isMoving) {
+		this.isMoving = isMoving;
+	}
+
+	public boolean isMoving(){
+		return isMoving;
+	}
+	
+	public boolean isMoveFinish()
+	{
+		if (direction == Const.UP || direction == Const.DOWN)
+		{
+			if (nextCordinate == getY())
+			{
+				nextCordinate = -1;
+				return true;
+			}
+		}
+		else if (direction == Const.LEFT || direction == Const.RIGHT)
+		{
+			if (nextCordinate == getX())
+			{
+				nextCordinate = -1;
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
 	public void move()
 	{
-		switch(direction)
-		{
-		case Const.UP:
-			move(0, -speed);
-			break;
-		case Const.DOWN:
-			move(0, speed);
-			break;
-		case Const.LEFT:
-			move(-speed, 0);
-			break;
-		case Const.RIGHT:
-			move(speed, 0);
-			break;
+			switch(direction)
+			{
+			case Const.UP:
+				nextCordinate = getY() - speed;
+				move(0, -speed);
+				break;
+			case Const.DOWN:
+				nextCordinate = getY() + speed;
+				move(0, speed);
+				break;
+			case Const.LEFT:
+				nextCordinate = getX() - speed;
+				move(-speed, 0);
+				break;
+			case Const.RIGHT:
+				nextCordinate = getX() + speed;
+				move(speed, 0);
+				break;
 		}
 	}
 	
@@ -82,9 +122,6 @@ public class MoveObject extends Sprite
 
 	public void setDirection(int direction) 
 	{
-		
-		
-		int time = direction - this.direction;
 		//≤‚ ‘¥˙¬Î
 		switch(direction)
 		{
@@ -112,5 +149,4 @@ public class MoveObject extends Sprite
 	{
 		return collidesWith(s, true);
 	}
-	
 }

@@ -30,7 +30,13 @@ public class TankCanvas extends GameCanvas implements Runnable
 	private SceneManager scene;
 	
 	private int status;
+	
+	private int width;
+	private int height;
 
+	private int layerManagerX;
+	private int layerManagerY;
+	
 	private boolean onrun;	
 	
 	//resouce
@@ -68,10 +74,11 @@ public class TankCanvas extends GameCanvas implements Runnable
 			e.printStackTrace();
 		}
 		
+		width = getWidth();
+		height = getHeight();
 		
 		
 		//加载地图和精灵
-		scene = new SceneManager();
 		
 		background = new TiledLayer(15, 15, imglandform, Const.GRIDSIZE, Const.GRIDSIZE);
 		player = new Player(imgplayer, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED);
@@ -79,12 +86,17 @@ public class TankCanvas extends GameCanvas implements Runnable
 		enemys = new Vector();
 		shells = new Vector();
 		home = new Home(imghome, Const.GRIDSIZE, Const.GRIDSIZE);
+
+		scene = new SceneManager(60, 68, background.getWidth(), background.getHeight(), width, height);
 		
 		loadScene(map);
 		
+		layerManagerX = 60;
+		layerManagerY = 68;
+		
 		//显示这个图层
 		scene.append(background);
-		scene.setViewWindow(60, 68, this.getWidth(), this.getHeight());
+		scene.setViewWindow(layerManagerX, layerManagerY, width, height);
 		
 		scene.paint(graphics, 0, 0);
 		
@@ -111,7 +123,15 @@ public class TankCanvas extends GameCanvas implements Runnable
 		
 		if(playerControl() == Const.MOVE)
 		{
-			player.judgeCollideAct(walls, enemys, shells);
+			if (!player.judgeCollideAct(walls, enemys, shells))
+			{
+				if (player.getX() == scene.getCenterX())
+					scene.setXMoving(true);
+				if (player.getY() == scene.getCenterY())
+					scene.setYMoving(true);
+				scene.move(player.getDirection());
+					
+			}
 		}
 		else if(playerControl() == Const.FIRE)
 		{
@@ -124,15 +144,20 @@ public class TankCanvas extends GameCanvas implements Runnable
 		// TODO Auto-generated method stub
 		while(onrun)
 		{
-
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			//游戏逻辑控制
 			
 			gameLogic();
 			
-			
 			scene.paint(graphics, 0, 0);
 			flushGraphics();
-			
+		
 
 		}
 	}
