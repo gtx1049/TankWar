@@ -38,4 +38,10 @@ public class Const
 	public static final int ISSILENT = 25;
 	public static final int ISOVER = 26;
 	public static final int ISCOMPLETE = 27;
+	
+	public static final int TANKSPEED = 1;
+	
+	public static final int MOVE = 0;
+	public static final int FIRE = 1;
+	public static final int COLD = 2;
 }

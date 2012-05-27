@@ -8,8 +8,8 @@ import com.game.Const;
 public class MoveObject extends Sprite
 {
 
-	private int speed;
-	private int direction;
+	protected int speed;
+	protected int direction;
 	
 	public MoveObject(Image image, int frameWidth, int frameHeight)
 	{
@@ -85,7 +85,26 @@ public class MoveObject extends Sprite
 		
 		
 		int time = direction - this.direction;
-				
+		//≤‚ ‘¥˙¬Î
+		switch(direction)
+		{
+		case Const.UP:
+			setTransform(TRANS_NONE);
+			break;
+		case Const.DOWN:
+			setTransform(TRANS_ROT180);
+			break;
+		case Const.RIGHT:
+			setTransform(TRANS_ROT90);
+			break;
+		case Const.LEFT:
+			setTransform(TRANS_ROT270);
+			break;
+
+		default:
+			break;
+		}
+		
 		this.direction = direction;
 	}
 	

@@ -5,7 +5,7 @@ import javax.microedition.lcdui.game.TiledLayer;
 
 public class SceneManager extends LayerManager
 {
-	public SceneManager(TiledLayer t)
+	public SceneManager()
 	{
 		super();
 	}
