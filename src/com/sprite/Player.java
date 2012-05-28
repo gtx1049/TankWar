@@ -1,33 +1,25 @@
 package com.sprite;
 
-import java.util.Vector;
 
 import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.game.Sprite;
 
 import com.game.Const;
 
-public class Player extends MoveObject
+public class Player extends Tank
 {
 	
-	private int width;
-	private int height;
-	
-	public Player(Image image, int frameWidth, int frameHeight, int speed)
+	public Player(Image image, int frameWidth, int frameHeight, int speed, Image imgshell)
 	{
-		super(image, frameWidth, frameHeight);
+		super(image, frameWidth, frameHeight, imgshell);
 		
 		this.speed = speed;
 		this.direction = Const.UP;
+
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void setMoveArea(int width, int height){
-		this.width = width;
-		this.height = height;
-	}
 	
-	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, Shell[] shell, int[] spritecount)
+	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, int[] spritecount)
 	{
 		
 //		System.out.println("Player Position : (" + ( getX() + getWidth() / 2 ) + ", " + ( getY() + getHeight() / 2 ) + ")");
@@ -39,13 +31,14 @@ public class Player extends MoveObject
 			return true;
 		if (getY() <= 0 && direction == Const.UP)
 			return true;
-		if (getX() + getWidth() >= width && direction == Const.RIGHT)
+		if (getX() + getWidth() >= this.width && direction == Const.RIGHT)
 			return true;
-		if (getY() + getHeight() >= height && direction == Const.DOWN)
+		if (getY() + getHeight() >= this.height && direction == Const.DOWN)
 			return true;
 		
 		
 		this.doAction();
+		
 		for(int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
 		{
 			if(this.collidesWith(walls[i], false))
@@ -59,16 +52,6 @@ public class Player extends MoveObject
 		for(int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 		{
 			if(this.collidesWith(enemys[i], false))
-			{
-				this.undo();
-				isCollide = true;
-				break;
-			}
-		}
-		
-		for(int i = 0; i < spritecount[Const.SHELLCOUNT]; i++)
-		{
-			if(this.collidesWith(shell[i], false))
 			{
 				this.undo();
 				isCollide = true;

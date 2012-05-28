@@ -1,7 +1,6 @@
 package com.game;
 
 import java.io.IOException;
-import java.util.Vector;
 
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
@@ -35,6 +34,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 	private int layerManagerY;
 	
 	private boolean onrun;	
+	private boolean onfire;
 	
 	private int spritecount[] = new int[3];
 	//resouce
@@ -79,7 +79,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 		//加载地图和精灵
 		
 		background = new TiledLayer(15, 15, imglandform, Const.GRIDSIZE, Const.GRIDSIZE);
-		player = new Player(imgplayer, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED);
+		player = new Player(imgplayer, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell);
 		walls = new Wall[100];
 		enemys = new Enemy[100];
 		shells = new Shell[100];
@@ -108,7 +108,8 @@ public class TankCanvas extends GameCanvas implements Runnable
 		
 		//游戏开始
 		onrun = true;
-
+		onfire = false;
+		
 		new Thread(this).start();
 	}
 
@@ -196,7 +197,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				else if(map[i][j] == Const.REDENEMY)
 				{
 					background.setCell(j, i, 1);
-					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE);
+					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, imgshell);
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(0);
 					e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
@@ -208,7 +209,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				else if(map[i][j] == Const.NORMALENEMY)
 				{
 					background.setCell(j, i, 1);
-					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE);
+					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, imgshell);
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(1);
 					e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
@@ -268,7 +269,16 @@ public class TankCanvas extends GameCanvas implements Runnable
 		//开炮
 		if((keystate & FIRE_PRESSED) != 0)
 		{
+			if(onfire)
+			{
+				return Const.COLD;
+			}
+			onfire = true;
 			return Const.FIRE;
+		}
+		else 
+		{
+			onfire = false;
 		}
 		
 		return Const.COLD;

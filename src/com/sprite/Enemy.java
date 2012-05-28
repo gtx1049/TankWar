@@ -7,14 +7,14 @@ import javax.microedition.lcdui.Image;
 
 import com.game.Const;
 
-public class Enemy extends MoveObject
+public class Enemy extends Tank
 {
 	
 	private Random random;
 
-	public Enemy(Image image, int frameWidth, int frameHeight)
+	public Enemy(Image image, int frameWidth, int frameHeight, Image imgshell)
 	{
-		super(image, frameWidth, frameHeight);
+		super(image, frameWidth, frameHeight, imgshell);
 		// TODO Auto-generated constructor stub
 		
 		Date date = new Date();
@@ -27,7 +27,7 @@ public class Enemy extends MoveObject
 	{
 		if (random.nextInt() % 3 == 0)
 		{
-			Shell shell = new Shell(image, width, height);
+			Shell shell = new Shell(image, width, height, this.getDirection());
 			
 			shell.setPosition(getX(), getY());
 			shell.setDirection(getDirection());

@@ -40,6 +40,7 @@ public class Const
 	public static final int ISCOMPLETE = 27;
 	
 	public static final int TANKSPEED = 1;
+	public static final int SHELLSPEED = 2;
 	
 	public static final int MOVE = 0;
 	public static final int FIRE = 1;
@@ -49,4 +50,7 @@ public class Const
 	public static final int ENEMYCOUNT = 1;
 	public static final int WALLCOUNT = 2;
 	
+	public static final int COLLIDEWITHWALL = 0;
+	public static final int COLLIDWITHTANK = 1;
+	public static final int OVERBOARDER = 2;
 }

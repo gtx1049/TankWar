@@ -15,6 +15,9 @@ public class MoveObject extends Sprite
 	
 	protected int nextCordinate = -1;
 	
+	protected int width;
+	protected int height;
+	
 	public MoveObject(Image image, int frameWidth, int frameHeight)
 	{
 		super(image, frameWidth, frameHeight);
@@ -26,6 +29,10 @@ public class MoveObject extends Sprite
 		move();
 	}
 	
+	public void setMoveArea(int width, int height){
+		this.width = width;
+		this.height = height;
+	}
 	
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
@@ -149,4 +156,5 @@ public class MoveObject extends Sprite
 	{
 		return collidesWith(s, true);
 	}
+	
 }
