@@ -34,17 +34,15 @@ public class Player extends MoveObject
 		
 		boolean isCollide = false;
 		
-		if (getX() <= 0)
-			System.out.println("X < 0");
-		if (getY() <= 0)
-			System.out.println("Y < 0");
-		if (getX() >= width)
-			System.out.println(" X > Width");
-		if (getY() >= height)
-			System.out.println("Y > Height");
+		if (getX() <= 0 && direction == Const.LEFT)
+			return true;
+		if (getY() <= 0 && direction == Const.UP)
+			return true;
+		if (getX() + getWidth() >= width && direction == Const.RIGHT)
+			return true;
+		if (getY() + getHeight() >= height && direction == Const.DOWN)
+			return true;
 		
-//		if (getX() <= 0 || getY() <= 0 || getX() >= width || getY() >= height)
-//			return true;
 		
 		this.doAction();
 		for(int i = walls.size() - 1; i >= 0; i--)

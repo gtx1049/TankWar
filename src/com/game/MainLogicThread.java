@@ -50,14 +50,14 @@ public class MainLogicThread implements Runnable{
 		{
 			if (!player.judgeCollideAct(walls, enemys, shells))
 			{
-				if (player.getX() >= scene.getCenterX() && player.getDirection() == Const.RIGHT)
+				if (player.getX() + player.getWidth()>= scene.getCenterX() && player.getDirection() == Const.RIGHT)
 					scene.setXMoving(true);
 				else if (player.getX() <= scene.getCenterX() && player.getDirection() == Const.LEFT)
 					scene.setXMoving(true);
 				
-				if (player.getY() >= scene.getCenterY() && player.getDirection() == Const.DOWN)
+				if (player.getY() + player.getHeight() >= scene.getCenterY() && player.getDirection() == Const.DOWN)
 					scene.setYMoving(true);
-				else if (player.getY() <= scene.getCenterY() && player.getDirection() == Const.UP)
+				else if (player.getY() + player.getHeight() <= scene.getCenterY() && player.getDirection() == Const.UP)
 					scene.setYMoving(true);
 					
 				scene.move(player.getDirection());
