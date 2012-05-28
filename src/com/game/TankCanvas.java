@@ -6,15 +6,12 @@ import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Item;
-import javax.microedition.lcdui.Spacer;
 import javax.microedition.lcdui.game.GameCanvas;
-import javax.microedition.lcdui.game.Sprite;
 import javax.microedition.lcdui.game.TiledLayer;
-import javax.microedition.m3g.Image2D;
 
+import com.sprite.Enemy;
 import com.sprite.Home;
 import com.sprite.Player;
-import com.sprite.Enemy;
 import com.sprite.Shell;
 import com.sprite.Wall;
 
@@ -89,6 +86,8 @@ public class TankCanvas extends GameCanvas implements Runnable
 
 		scene = new SceneManager(60, 68, background.getWidth(), background.getHeight(), width, height);
 		
+		player.setMoveArea(background.getWidth(), background.getHeight());
+		
 		loadScene(map);
 		
 		layerManagerX = 60;
@@ -106,59 +105,27 @@ public class TankCanvas extends GameCanvas implements Runnable
 		new Thread(this).start();
 	}
 
-	public void gameLogic()
-	{
-		for(int i = shells.size() - 1; i >= 0; i--)
-		{
-			Shell s = (Shell)shells.elementAt(i);
-			s.collideObject(s); 
-			s.doAction();
-		}
-		for(int i = enemys.size() - 1; i >= 0; i--)
-		{
-			Enemy e = (Enemy)enemys.elementAt(i);
-			
-			e.doAction();
-		}
-		
-		if(playerControl() == Const.MOVE)
-		{
-			if (!player.judgeCollideAct(walls, enemys, shells))
-			{
-				if (player.getX() == scene.getCenterX())
-					scene.setXMoving(true);
-				if (player.getY() == scene.getCenterY())
-					scene.setYMoving(true);
-				scene.move(player.getDirection());
-					
-			}
-		}
-		else if(playerControl() == Const.FIRE)
-		{
-			
-		}
-	}
-
 	public void run()
 	{
 		// TODO Auto-generated method stub
 		while(onrun)
 		{
+			
+			
+			int action = playerControl();
+			
+			//ÓÎÏ·Âß¼­¿ØÖÆ
+			new Thread(new MainLogicThread(action,shells, enemys, walls, player, scene)).start();
+			
 			try {
-				Thread.sleep(5);
+				Thread.sleep(0);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			//ÓÎÏ·Âß¼­¿ØÖÆ
-			
-			gameLogic();
-			
 			scene.paint(graphics, 0, 0);
 			flushGraphics();
-		
-
 		}
 	}
 	
@@ -166,6 +133,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 	public void loadScene(int[][] map)
 	{
 		for(int i = 0; i < 15; i++)
+			
 		{
 			for(int j = 0; j < 15; j++)
 			{
@@ -184,7 +152,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				else if(map[i][j] == Const.PLAYER)
 				{
 					background.setCell(j, i, 1);
-					player.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
+					player.setPosition(j * Const.GRIDSIZE - 1, i * Const.GRIDSIZE);
 					player.setFrame(0);
 					player.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
 					scene.append(player);
