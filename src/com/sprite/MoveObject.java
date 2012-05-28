@@ -133,15 +133,19 @@ public class MoveObject extends Sprite
 		switch(direction)
 		{
 		case Const.UP:
+			System.out.println(getX()+","+getY());
 			setTransform(TRANS_NONE);
 			break;
 		case Const.DOWN:
+			System.out.println(getX()+","+getY());
 			setTransform(TRANS_ROT180);
 			break;
 		case Const.RIGHT:
+			System.out.println(getX()+","+getY());
 			setTransform(TRANS_ROT90);
 			break;
 		case Const.LEFT:
+			System.out.println(getX()+","+getY());
 			setTransform(TRANS_ROT270);
 			break;
 

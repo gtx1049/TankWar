@@ -27,13 +27,13 @@ public class Player extends Tank
 		
 		boolean isCollide = false;
 		
-		if (getX() <= 0 && direction == Const.LEFT)
+		if (getX() <= -2 && direction == Const.LEFT)
 			return true;
-		if (getY() <= 0 && direction == Const.UP)
+		if (getY() <= -2 && direction == Const.UP)
 			return true;
-		if (getX() + getWidth() >= this.width && direction == Const.RIGHT)
+		if (getX() + getWidth() >= this.width + 1 && direction == Const.RIGHT)
 			return true;
-		if (getY() + getHeight() >= this.height && direction == Const.DOWN)
+		if (getY() + getHeight() >= this.height + 1 && direction == Const.DOWN)
 			return true;
 		
 		
