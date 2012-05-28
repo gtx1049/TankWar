@@ -5,20 +5,25 @@ import java.util.Vector;
 import com.sprite.Enemy;
 import com.sprite.Player;
 import com.sprite.Shell;
+import com.sprite.Wall;
 
 public class MainLogicThread implements Runnable{
 
 	private int action;
 	
-	private Vector shells;
-	private Vector enemys;
-	private Vector walls;
+	private Shell[] shells;
+	private Enemy[] enemys;
+	private Wall[] walls;
 	
 	private Player player;
 	
 	private SceneManager scene;
 	
-	public MainLogicThread(int action, Vector shells, Vector enemys, Vector walls, Player player, SceneManager scene){
+	private int[] spritecount;
+	
+	public MainLogicThread(int action, Shell[] shells, Enemy[] enemys, Wall[] walls, 
+						   int[] count,	Player player, SceneManager scene)
+	{
 		this.action = action;
 		
 		this.shells = shells;
@@ -28,27 +33,27 @@ public class MainLogicThread implements Runnable{
 		this.player = player;
 		
 		this.scene = scene;
+		
+		spritecount = count;
 	}
 	
 	
 	public void gameLogic()
 	{
-		for(int i = shells.size() - 1; i >= 0; i--)
-		{
-			Shell s = (Shell)shells.elementAt(i);
-			s.collideObject(s); 
-			s.doAction();
+		for(int i = 0; i < spritecount[Const.SHELLCOUNT]; i++)
+		{			
+			shells[i].collideObject(shells[i]); 
+			shells[i].doAction();
 		}
-		for(int i = enemys.size() - 1; i >= 0; i--)
+		for(int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 		{
-			Enemy e = (Enemy)enemys.elementAt(i);
 			
-			e.doAction();
+			enemys[i].doAction();
 		}
 		
 		if(action == Const.MOVE)
 		{
-			if (!player.judgeCollideAct(walls, enemys, shells))
+			if (!player.judgeCollideAct(walls, enemys, shells, spritecount))
 			{
 				if (player.getX() + player.getWidth()>= scene.getCenterX() && player.getDirection() == Const.RIGHT)
 					scene.setXMoving(true);

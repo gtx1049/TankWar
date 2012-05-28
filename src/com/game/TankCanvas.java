@@ -18,9 +18,9 @@ import com.sprite.Wall;
 public class TankCanvas extends GameCanvas implements Runnable
 {
 	private Player player;
-	private Vector enemys;
-	private Vector shells;
-	private Vector walls;
+	private Enemy[] enemys;
+	private Shell[] shells;
+	private Wall[] walls;
 	private Item item;
 	private Home home;
 	private TiledLayer background;
@@ -36,6 +36,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 	
 	private boolean onrun;	
 	
+	private int spritecount[] = new int[3];
 	//resouce
 	private Image imgplayer;
 	private Image imglandform;
@@ -79,9 +80,15 @@ public class TankCanvas extends GameCanvas implements Runnable
 		
 		background = new TiledLayer(15, 15, imglandform, Const.GRIDSIZE, Const.GRIDSIZE);
 		player = new Player(imgplayer, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED);
-		walls = new Vector();
-		enemys = new Vector();
-		shells = new Vector();
+		walls = new Wall[100];
+		enemys = new Enemy[100];
+		shells = new Shell[100];
+		
+		for(int i =0; i < 3; i++)
+		{
+			spritecount[0] = 0;
+		}
+		
 		home = new Home(imghome, Const.GRIDSIZE, Const.GRIDSIZE);
 
 		scene = new SceneManager(60, 68, background.getWidth(), background.getHeight(), width, height);
@@ -115,7 +122,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 			int action = playerControl();
 			
 			//ÓÎÏ·Âß¼­¿ØÖÆ
-			new Thread(new MainLogicThread(action,shells, enemys, walls, player, scene)).start();
+			new Thread(new MainLogicThread(action,shells, enemys, walls, spritecount, player, scene)).start();
 			
 			try {
 				Thread.sleep(0);
@@ -170,7 +177,9 @@ public class TankCanvas extends GameCanvas implements Runnable
 					Wall wall = new Wall(imgwall, Const.GRIDSIZE, Const.GRIDSIZE);
 					wall.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					wall.setFrame(0);
-					walls.addElement(wall);
+//					walls.addElement(wall);
+					walls[spritecount[Const.WALLCOUNT]] = wall;
+					spritecount[Const.WALLCOUNT]++;
 					scene.append(wall);
 				}
 				else if(map[i][j] == Const.HARDBRICK)
@@ -179,7 +188,9 @@ public class TankCanvas extends GameCanvas implements Runnable
 					Wall wall = new Wall(imghardwall, Const.GRIDSIZE, Const.GRIDSIZE);
 					wall.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					wall.setFrame(0);
-					walls.addElement(wall);
+//					walls.addElement(wall);
+					walls[spritecount[Const.WALLCOUNT]] = wall;
+					spritecount[Const.WALLCOUNT]++;
 					scene.append(wall);
 				}
 				else if(map[i][j] == Const.REDENEMY)
@@ -189,7 +200,9 @@ public class TankCanvas extends GameCanvas implements Runnable
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(0);
 					e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
-					enemys.addElement(e);
+//					enemys.addElement(e);
+					enemys[spritecount[Const.WALLCOUNT]] = e;
+					spritecount[Const.ENEMYCOUNT]++;
 					scene.append(e);
 				}
 				else if(map[i][j] == Const.NORMALENEMY)
@@ -199,7 +212,9 @@ public class TankCanvas extends GameCanvas implements Runnable
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(1);
 					e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
-					enemys.addElement(e);
+//					enemys.addElement(e);
+					enemys[spritecount[Const.WALLCOUNT]] = e;
+					spritecount[Const.ENEMYCOUNT]++;
 					scene.append(e);
 				}
 			}

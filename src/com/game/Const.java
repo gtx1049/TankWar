@@ -44,4 +44,9 @@ public class Const
 	public static final int MOVE = 0;
 	public static final int FIRE = 1;
 	public static final int COLD = 2;
+	
+	public static final int SHELLCOUNT = 0;
+	public static final int ENEMYCOUNT = 1;
+	public static final int WALLCOUNT = 2;
+	
 }

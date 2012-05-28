@@ -3,6 +3,7 @@ package com.sprite;
 import java.util.Vector;
 
 import javax.microedition.lcdui.Image;
+import javax.microedition.lcdui.game.Sprite;
 
 import com.game.Const;
 
@@ -26,11 +27,11 @@ public class Player extends MoveObject
 		this.height = height;
 	}
 	
-	public boolean judgeCollideAct(Vector walls, Vector enemys, Vector shell)
+	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, Shell[] shell, int[] spritecount)
 	{
 		
-		System.out.println("Player Position : (" + ( getX() + getWidth() / 2 ) + ", " + ( getY() + getHeight() / 2 ) + ")");
-		System.out.println("Width & Height : " + width + ", " + height);
+//		System.out.println("Player Position : (" + ( getX() + getWidth() / 2 ) + ", " + ( getY() + getHeight() / 2 ) + ")");
+//		System.out.println("Width & Height : " + width + ", " + height);
 		
 		boolean isCollide = false;
 		
@@ -45,9 +46,9 @@ public class Player extends MoveObject
 		
 		
 		this.doAction();
-		for(int i = walls.size() - 1; i >= 0; i--)
+		for(int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
 		{
-			if(this.collidesWith((Wall)walls.elementAt(i), false))
+			if(this.collidesWith(walls[i], false))
 			{
 				this.undo();
 				isCollide = true;
@@ -55,9 +56,9 @@ public class Player extends MoveObject
 			}
 		}
 		
-		for(int i = enemys.size() - 1; i >= 0; i--)
+		for(int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 		{
-			if(this.collidesWith((Enemy)enemys.elementAt(i), false))
+			if(this.collidesWith(enemys[i], false))
 			{
 				this.undo();
 				isCollide = true;
@@ -65,9 +66,9 @@ public class Player extends MoveObject
 			}
 		}
 		
-		for(int i = shell.size() - 1; i >= 0; i--)
+		for(int i = 0; i < spritecount[Const.SHELLCOUNT]; i++)
 		{
-			if(this.collidesWith((Shell)shell.elementAt(i), false))
+			if(this.collidesWith(shell[i], false))
 			{
 				this.undo();
 				isCollide = true;
