@@ -14,7 +14,6 @@ public class MoveObject extends Sprite
 	protected boolean isMoving = false;
 	
 	protected int nextCordinate = -1;
-	protected int preCordinate = -1;
 	
 	protected int width;
 	protected int height;
@@ -105,42 +104,7 @@ public class MoveObject extends Sprite
 		return direction;
 	}
 
-	public void setDirection(int direction) 
-	{
-		//≤‚ ‘¥˙¬Î
-		switch(direction)
-		{
-		case Const.UP:
-			preCordinate = getX();
-			System.out.println(getX()+","+getY());
-			setTransform(TRANS_NONE);
-			setPosition(preCordinate, getY());
-			break;
-		case Const.DOWN:
-			preCordinate = getX();
-			System.out.println(getX()+","+getY());
-			setTransform(TRANS_ROT180);
-			setPosition(preCordinate, getY());
-			break;
-		case Const.RIGHT:
-			preCordinate = getY();
-			System.out.println(getX()+","+getY());
-			setTransform(TRANS_ROT90);
-			setPosition(getX(), preCordinate);
-			break;
-		case Const.LEFT:
-			preCordinate = getY();
-			System.out.println(getX()+","+getY());
-			setTransform(TRANS_ROT270);
-			setPosition(getX(), preCordinate);
-			break;
 
-		default:
-			break;
-		}
-		
-		this.direction = direction;
-	}
 	
 	public boolean collideObject(Sprite s)
 	{

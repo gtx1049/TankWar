@@ -100,14 +100,14 @@ public class TankCanvas extends GameCanvas implements Runnable
 		layerManagerX = 60;
 		layerManagerY = 68;
 		
-		Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, Const.NORMALENEMY);
-		e.setMoveArea(background.getWidth(), background.getHeight());
-		e.setPosition(3 * Const.GRIDSIZE, 3 * Const.GRIDSIZE);
-		e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
-//		enemys.addElement(e);
-		enemys[spritecount[Const.ENEMYCOUNT]] = e;
-		spritecount[Const.ENEMYCOUNT]++;
-		scene.append(e);
+//		Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, Const.NORMALENEMY);
+//		e.setMoveArea(background.getWidth(), background.getHeight());
+//		e.setPosition(3 * Const.GRIDSIZE, 3 * Const.GRIDSIZE);
+//		e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
+////		enemys.addElement(e);
+//		enemys[spritecount[Const.ENEMYCOUNT]] = e;
+//		spritecount[Const.ENEMYCOUNT]++;
+//		scene.append(e);
 		
 		//ÏÔÊ¾Õâ¸öÍ¼²ã
 		scene.append(background);
@@ -206,24 +206,26 @@ public class TankCanvas extends GameCanvas implements Runnable
 				else if(map[i][j] == Const.REDENEMY)
 				{
 					background.setCell(j, i, 1);
-					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, Const.REDENEMY);
+					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, Const.REDENEMY, spritecount[Const.ENEMYCOUNT]);
+					e.setMoveArea(background.getWidth(), background.getHeight());
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(0);
 					e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
 //					enemys.addElement(e);
-					enemys[spritecount[Const.WALLCOUNT]] = e;
+					enemys[spritecount[Const.ENEMYCOUNT]] = e;
 					spritecount[Const.ENEMYCOUNT]++;
 					scene.append(e);
 				}
 				else if(map[i][j] == Const.NORMALENEMY)
 				{
 					background.setCell(j, i, 1);
-					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, Const.NORMALENEMY);
+					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, Const.GREENENEMY, spritecount[Const.ENEMYCOUNT]);
+					e.setMoveArea(background.getWidth(), background.getHeight());
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(1);
 					e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
 //					enemys.addElement(e);
-					enemys[spritecount[Const.WALLCOUNT]] = e;
+					enemys[spritecount[Const.ENEMYCOUNT]] = e;
 					spritecount[Const.ENEMYCOUNT]++;
 					scene.append(e);
 				}

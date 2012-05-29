@@ -19,6 +19,7 @@ public class MainLogicThread implements Runnable{
 	
 	private int[] spritecount;
 	
+	private static int frameCount = 0;
 	
 	public MainLogicThread(int action, Shell[] shells, Enemy[] enemys, Wall[] walls, 
 						   int[] count,	Player player, SceneManager scene)
@@ -76,8 +77,21 @@ public class MainLogicThread implements Runnable{
 				{
 					boolean isOver = enemys[index].onHit();
 					
+					removeShell(shells[i]);
+					
+					System.out.println("Index : " + index);
+					
+					try{
 					if (isOver)
 						removeEnemy(enemys[index]);
+						System.out.println("Remove Finish");
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+					
+					i--;
 				}
 				
 				
@@ -88,7 +102,9 @@ public class MainLogicThread implements Runnable{
 		for(int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 		{
 			
-			//enemys[i].judgeCollideAct(walls, enemys, spritecount, player);
+			enemys[i].judgeCollideAct(walls, enemys, spritecount, player);
+			if (frameCount % 100 == 0)
+				enemys[i].onFire(scene, shells, spritecount, true);
 		}
 		
 		if(action == Const.MOVE)
@@ -112,8 +128,13 @@ public class MainLogicThread implements Runnable{
 		else if(action == Const.FIRE)
 		{
 			//System.out.println("firing");
-			player.onFire(scene, shells, spritecount);
+			player.onFire(scene, shells, spritecount, false);
 		}
+		
+		if (frameCount == 1000)
+			frameCount = 0;
+		else
+			frameCount++;
 	}
 	
 
@@ -140,7 +161,7 @@ public class MainLogicThread implements Runnable{
 	
 	public void removeEnemy(Enemy enemyToRemove)
 	{
-		for (int i = 0; i != spritecount[Const.ENEMYCOUNT]; i++)
+		for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 		{
 			if (enemyToRemove == enemys[i])
 			{

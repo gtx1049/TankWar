@@ -11,85 +11,82 @@ public class Enemy extends Tank
 {
 	private int type;
 	private Random random;
+	
+	private int count = 0;
 
-	public Enemy(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, int type)
+	public Enemy(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, int type, int id)
 	{
 		super(image, frameWidth, frameHeight, imgshell);
 		// TODO Auto-generated constructor stub
 		
 		this.speed = speed;
-		this.direction = Const.DOWN;
+		setDirection(Const.DOWN);
 		
-		if (type == Const.NORMALENEMY)
+		this.type = type;
+		
+		if (type == Const.GREENENEMY)
 		{
-			nextFrame();
-			nextFrame();
-			nextFrame();
+			setFrame(2);
 		}
 		
 		Date date = new Date();
 		
-		random = new Random(date.getTime());
+		random = new Random(date.getTime() + id);
 		
 	}
 	
 	public boolean onHit()
 	{
+		System.out.println("On Hit");
+		
 		if (type == Const.NORMALENEMY)
 			return true;
 		else if (type == Const.REDENEMY)
 		{
-			nextFrame();
-			type = Const.GREENENEMY;
+			setFrame(3);
+			type = Const.NORMALENEMY;
 		}
 		else if (type == Const.GREENENEMY)
 		{
-			nextFrame();
+			setFrame(2);
 			type = Const.BLUEENEMY;
 		}
 		else if (type == Const.BLUEENEMY)
 		{
-			nextFrame();
+			setFrame(3);
 			type = Const.NORMALENEMY;
 		}
 		
 		return false;
 	}
-	
-	public MoveObject emitShell(Image image, int width, int height)
-	{
-		if (random.nextInt() % 3 == 0)
-		{
-			Shell shell = new Shell(image, width, height, this.getDirection(), Const.ENEMYFIRE);
-			
-			shell.setPosition(getX(), getY());
-			shell.setDirection(getDirection());
-			
-		}
-		return null;
-	}
-	
+		
 	public void doAction()
 	{
-		int factor = random.nextInt() % 4;
-		
-		switch (factor)
+		if (count == 20)
 		{
-		case 0:
-			setDirection(Const.UP);
-			break;
-		case 1:
-			setDirection(Const.RIGHT);
-			break;
-		case 2:
-			setDirection(Const.DOWN);
-			break;
-		case 3:
-			setDirection(Const.LEFT);
-			break;
+			int factor = random.nextInt() % 4;
+			
+			switch (factor)
+			{
+			case 0:
+				setDirection(Const.UP);
+				break;
+			case 1:
+				setDirection(Const.RIGHT);
+				break;
+			case 2:
+				setDirection(Const.DOWN);
+				break;
+			case 3:
+				setDirection(Const.LEFT);
+				break;
+			}
+			
+			count = 0;
 		}
 		
 		move();
+		count ++;
 	}
 	
 	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, int[] spritecount, Player player)

@@ -27,65 +27,31 @@ public class Shell extends MoveObject
 			return Const.OVERBOARDER;
 		}
 		
-		GetCordinate getCordinateObject = GetCordinate.createCordinateGetter(direction);
-		
-		int code = -1;
-		int collisionType = -1;
-		
-		
-		for (int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
+		for(int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
 		{
-			if(collidesWith(walls[i], true))
+			if(this.collidesWith(walls[i], true))
 			{
 				
-				if (code == -1)
-				{
-					getCordinateObject.setSprite(walls[i]);
-					code = i << 16;
-					collisionType = Const.COLLIDEWITHWALL;
-				}
-				else if (getCordinateObject.getCordinateObject(walls[i]) == walls[i])
-				{
-					code = i << 16;
-					collisionType = Const.COLLIDEWITHWALL;
-				}
+				int wallcode = i << 16;
+				return Const.COLLIDEWITHWALL + wallcode; 
+				
 			}
 		}
 		
-		if (type == Const.ENEMYFIRE)
-		{
-			if (collidesWith(player, true))
-			{
-				if (getCordinateObject.getCordinateObject(player) == player)
-					return Const.COLLIDEWITHPLAYER;
-			}
-		}
-		else if (type == Const.PLAYERFIRE)
-		{
+		if (type == Const.PLAYERFIRE)
 			for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 			{
-				System.out.println("Detecing On Enemy!");	
-				
-				if (collidesWith(enemy[i], true))
+				if (this.collidesWith(enemy[i], true))
 				{
-					
-					if (getCordinateObject.getCordinateObject(walls[i]) == walls[i])
-					{
-						code = i << 16;
-						collisionType = Const.COLLIDWITHTANK;
-						System.out.println("Hit On Enemy!");
-					}
-					
+					int enemyCode = i << 16;
+					return Const.COLLIDWITHTANK + enemyCode;
 				}
 			}
-		}
+		else if (type == Const.ENEMYFIRE)
+			if (this.collidesWith(player, true))
+				return Const.COLLIDEWITHPLAYER;
 		
-		if (collisionType != -1)
-			return collisionType + code;
-		else
-		{
-			this.doAction();
-			return -1;
-		}
+		this.doAction();
+		return -1;
 	}
 }

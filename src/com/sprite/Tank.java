@@ -8,6 +8,7 @@ import com.game.Const;
 public class Tank extends MoveObject
 {
 	protected Image imgshell;
+	protected int preCordinate = -1;
 	
 	public Tank(Image image, int frameWidth, int frameHeight, Image img)
 	{
@@ -16,9 +17,14 @@ public class Tank extends MoveObject
 		this.imgshell = img;
 	}
 	
-	public void onFire(LayerManager im, Shell[] shells, int[] spritecount)
+	public void onFire(LayerManager im, Shell[] shells, int[] spritecount, boolean isEnemy)
 	{
-		Shell s = new Shell(imgshell, Const.GRIDSIZE, Const.GRIDSIZE, this.getDirection(), Const.PLAYERFIRE);
+		int shellType = isEnemy? Const.ENEMYFIRE : Const.PLAYERFIRE;
+		
+		Shell s = new Shell(imgshell, Const.GRIDSIZE, Const.GRIDSIZE, this.getDirection(), shellType);
+		
+		if (isEnemy)
+			s.setFrame(1);
 		
 		//当player调用onfire时，其存储在moveobject的宽与高将会传入
 		s.setMoveArea(this.width, this.height);
@@ -56,6 +62,43 @@ public class Tank extends MoveObject
 		
 		s.setPosition(shellX, shellY);
 		im.insert(s, 0);
+	}
+	
+	public void setDirection(int direction) 
+	{
+		//测试代码
+		switch(direction)
+		{
+		case Const.UP:
+			preCordinate = getX();
+			System.out.println(getX()+","+getY());
+			setTransform(TRANS_NONE);
+			setPosition(preCordinate, getY());
+			break;
+		case Const.DOWN:
+			preCordinate = getX();
+			System.out.println(getX()+","+getY());
+			setTransform(TRANS_ROT180);
+			setPosition(preCordinate, getY());
+			break;
+		case Const.RIGHT:
+			preCordinate = getY();
+			System.out.println(getX()+","+getY());
+			setTransform(TRANS_ROT90);
+			setPosition(getX(), preCordinate);
+			break;
+		case Const.LEFT:
+			preCordinate = getY();
+			System.out.println(getX()+","+getY());
+			setTransform(TRANS_ROT270);
+			setPosition(getX(), preCordinate);
+			break;
+
+		default:
+			break;
+		}
+		
+		this.direction = direction;
 	}
 
 }
