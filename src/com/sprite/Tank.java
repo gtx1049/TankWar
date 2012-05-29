@@ -18,7 +18,7 @@ public class Tank extends MoveObject
 	
 	public void onFire(LayerManager im, Shell[] shells, int[] spritecount)
 	{
-		Shell s = new Shell(imgshell, Const.GRIDSIZE, Const.GRIDSIZE, this.getDirection());
+		Shell s = new Shell(imgshell, Const.GRIDSIZE, Const.GRIDSIZE, this.getDirection(), Const.PLAYERFIRE);
 		
 		//当player调用onfire时，其存储在moveobject的宽与高将会传入
 		s.setMoveArea(this.width, this.height);

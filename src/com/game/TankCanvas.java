@@ -197,7 +197,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				else if(map[i][j] == Const.REDENEMY)
 				{
 					background.setCell(j, i, 1);
-					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, imgshell);
+					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, imgshell, Const.REDENEMY);
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(0);
 					e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
@@ -209,7 +209,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				else if(map[i][j] == Const.NORMALENEMY)
 				{
 					background.setCell(j, i, 1);
-					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, imgshell);
+					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, imgshell, Const.NORMALENEMY);
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(1);
 					e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);

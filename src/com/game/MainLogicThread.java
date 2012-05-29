@@ -56,6 +56,8 @@ public class MainLogicThread implements Runnable{
 			}
 			else
 			{
+				removeShell(shells[i]);
+				
 				int index = dividecode >> 16;
 				//System.out.println("我是index:" + index);
 				dividecode = dividecode & 0x00001111;
@@ -63,18 +65,23 @@ public class MainLogicThread implements Runnable{
 				if(dividecode == Const.COLLIDEWITHWALL)
 				{
 					int tempdirection = shells[i].getDirection();
-					removeShell(shells[i]);
+					
 					//返回false，说明墙已经被彻底破坏
 					if(!walls[index].beBroken(tempdirection))
 					{
 						removeWall(walls[index]);
 					}
-					i--;
+					
 				}
 				else if(dividecode == Const.COLLIDWITHTANK)
 				{
+					boolean isOver = enemys[index].onHit();
 					
+					if (isOver)
+						removeEnemy(enemys[index]);
 				}
+				
+				i--;
 			}
 			
 		}
@@ -127,6 +134,22 @@ public class MainLogicThread implements Runnable{
 				shells[spritecount[Const.SHELLCOUNT] - 1] = null;
 				spritecount[Const.SHELLCOUNT]--;
 				
+			}
+		}
+	}
+	
+	public void removeEnemy(Enemy enemyToRemove)
+	{
+		for (int i = 0; i != spritecount[Const.ENEMYCOUNT]; i++)
+		{
+			if (enemyToRemove == enemys[i])
+			{
+				scene.remove(enemyToRemove);
+				
+				enemys[i] = enemys[spritecount[Const.ENEMYCOUNT] - 1];
+				
+				enemys[spritecount[Const.ENEMYCOUNT] - 1] = null;
+				spritecount[Const.ENEMYCOUNT]--;
 			}
 		}
 	}

@@ -8,19 +8,21 @@ public class Const
 	public static final int PLAYER = 0;
 	public static final int REDENEMY = 1;
 	public static final int NORMALENEMY = 2;
-	public static final int HOME = 3;
-	public static final int LAWN = 4;
-	public static final int BRICK = 5;
-	public static final int HARDBRICK = 6;
-	public static final int FOREST = 7;
-	public static final int WATER = 8;
+	public static final int GREENENEMY = 3;
+	public static final int BLUEENEMY = 4;
+	public static final int HOME = 5;
+	public static final int LAWN = 6;
+	public static final int BRICK = 7;
+	public static final int HARDBRICK = 8;
+	public static final int FOREST = 9;
+	public static final int WATER = 10;
 	
-	public static final int SUPERCANNON = 9;
-	public static final int UNBEATABLE = 10;
-	public static final int SILENCE = 11;
-	public static final int CLEAR = 12;
+	public static final int SUPERCANNON = 11;
+	public static final int UNBEATABLE = 12;
+	public static final int SILENCE = 13;
+	public static final int CLEAR = 14;
 	
-	public static final int NORMALCANNON = 13;
+	public static final int NORMALCANNON = 15;
 	
 	public static final int UP = 14;
 	public static final int RIGHT = 15;
@@ -53,4 +55,9 @@ public class Const
 	public static final int COLLIDEWITHWALL = 0;
 	public static final int COLLIDWITHTANK = 1;
 	public static final int OVERBOARDER = 2;
+	public static final int COLLIDEWITHPLAYER = 3;
+	
+	public static final int PLAYERFIRE = 0;
+	public static final int ENEMYFIRE = 1;
+	
 }

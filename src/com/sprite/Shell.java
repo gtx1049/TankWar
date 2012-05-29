@@ -6,12 +6,15 @@ import com.game.Const;
 
 public class Shell extends MoveObject
 {
+	
+	private int type;
 
-	public Shell(Image image, int frameWidth, int frameHeight, int direction)
+	public Shell(Image image, int frameWidth, int frameHeight, int direction, int type)
 	{
 		super(image, frameWidth, frameHeight);
 		this.speed = Const.SHELLSPEED;
 		this.direction = direction;
+		this.type = type;
 	}
 	
 	public int judgeCollideAct(Wall[] walls, Enemy[] enemy, Player player, Shell[] shells, int[] spritecount)
@@ -24,20 +27,60 @@ public class Shell extends MoveObject
 			return Const.OVERBOARDER;
 		}
 		
-		for(int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
+		GetCordinate getCordinateObject = GetCordinate.createCordinateGetter(direction);
+		
+		int code = -1;
+		int collisionType = -1;
+		
+		
+		for (int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
 		{
-			if(this.collidesWith(walls[i], true))
+			if (i == 0)
 			{
-				
-				int wallcode = i << 16;
-				//System.out.println("我是wallcode:" + wallcode + "," + i);
-				//System.out.println("我是返回值:" + (Const.COLLIDEWITHWALL + wallcode));
-				return Const.COLLIDEWITHWALL + wallcode; 
+				getCordinateObject.setSprite(walls[0]);
+				code = 0 << 16;
+				collisionType = Const.COLLIDEWITHWALL;
+				continue;
+			}
+			
+			if(collidesWith(walls[i], true))
+			{
+				if (getCordinateObject.getCordinateObject(walls[i]) == walls[i])
+				{
+					code = i << 16;
+					collisionType = Const.COLLIDEWITHWALL;
+				}
+			}
+		}
+		
+		if (type == Const.ENEMYFIRE)
+		{
+			if (collidesWith(player, true))
+			{
+				if (getCordinateObject.getCordinateObject(player) == player)
+					return Const.COLLIDEWITHPLAYER;
+			}
+		}
+		else if (type == Const.PLAYERFIRE)
+		{
+			for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
+			if (collidesWith(enemy[i], true))
+			{
+				if (getCordinateObject.getCordinateObject(walls[i]) == walls[i])
+				{
+					code = i << 16;
+					collisionType = Const.COLLIDWITHTANK;
+				}
 				
 			}
 		}
 		
-		this.doAction();
-		return -1;
+		if (collisionType != -1)
+			return collisionType + code;
+		else
+		{
+			this.doAction();
+			return -1;
+		}
 	}
 }
