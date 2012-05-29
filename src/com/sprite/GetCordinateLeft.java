@@ -11,7 +11,7 @@ public class GetCordinateLeft extends GetCordinate{
 	
 	
 	public Sprite getCordinateObject(Sprite object){
-		if (cordinate > object.getX())
+		if (cordinate < object.getX())
 		{
 			this.object = object;
 			cordinate = object.getX();

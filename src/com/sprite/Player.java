@@ -22,9 +22,6 @@ public class Player extends Tank
 	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, int[] spritecount)
 	{
 		
-//		System.out.println("Player Position : (" + ( getX() + getWidth() / 2 ) + ", " + ( getY() + getHeight() / 2 ) + ")");
-//		System.out.println("Width & Height : " + width + ", " + height);
-		
 		boolean isCollide = false;
 		
 		if (getX() <= -2 && direction == Const.LEFT)

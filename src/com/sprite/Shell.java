@@ -35,17 +35,16 @@ public class Shell extends MoveObject
 		
 		for (int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
 		{
-			if (i == 0)
-			{
-				getCordinateObject.setSprite(walls[0]);
-				code = 0 << 16;
-				collisionType = Const.COLLIDEWITHWALL;
-				continue;
-			}
-			
 			if(collidesWith(walls[i], true))
 			{
-				if (getCordinateObject.getCordinateObject(walls[i]) == walls[i])
+				
+				if (code == -1)
+				{
+					getCordinateObject.setSprite(walls[i]);
+					code = i << 16;
+					collisionType = Const.COLLIDEWITHWALL;
+				}
+				else if (getCordinateObject.getCordinateObject(walls[i]) == walls[i])
 				{
 					code = i << 16;
 					collisionType = Const.COLLIDEWITHWALL;
@@ -64,14 +63,20 @@ public class Shell extends MoveObject
 		else if (type == Const.PLAYERFIRE)
 		{
 			for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
-			if (collidesWith(enemy[i], true))
 			{
-				if (getCordinateObject.getCordinateObject(walls[i]) == walls[i])
-				{
-					code = i << 16;
-					collisionType = Const.COLLIDWITHTANK;
-				}
+				System.out.println("Detecing On Enemy!");	
 				
+				if (collidesWith(enemy[i], true))
+				{
+					
+					if (getCordinateObject.getCordinateObject(walls[i]) == walls[i])
+					{
+						code = i << 16;
+						collisionType = Const.COLLIDWITHTANK;
+						System.out.println("Hit On Enemy!");
+					}
+					
+				}
 			}
 		}
 		

@@ -12,10 +12,13 @@ public class Enemy extends Tank
 	private int type;
 	private Random random;
 
-	public Enemy(Image image, int frameWidth, int frameHeight, Image imgshell, int type)
+	public Enemy(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, int type)
 	{
 		super(image, frameWidth, frameHeight, imgshell);
 		// TODO Auto-generated constructor stub
+		
+		this.speed = speed;
+		this.direction = Const.DOWN;
 		
 		if (type == Const.NORMALENEMY)
 		{
@@ -87,6 +90,67 @@ public class Enemy extends Tank
 		}
 		
 		move();
+	}
+	
+	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, int[] spritecount, Player player)
+	{
+		
+		boolean isCollide = false;
+		
+		this.doAction();
+		
+		if (getX() <= -2 && direction == Const.LEFT)
+		{
+			undo();
+			return true;
+		}
+		if (getY() <= -2 && direction == Const.UP)
+		{
+			undo();
+			return true;
+		}
+		if (getX() + getWidth() >= this.width + 1 && direction == Const.RIGHT)
+		{
+			undo();
+			return true;
+		}
+		if (getY() + getHeight() >= this.height + 1 && direction == Const.DOWN)
+		{
+			undo();
+			return true;		
+		}
+		
+		for(int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
+		{
+			if(this.collidesWith(walls[i], false))
+			{
+				this.undo();
+				isCollide = true;
+				System.out.println("Collide with wall");
+				break;
+			}
+		}
+		
+		for(int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
+		{
+			if (this == enemys[i])
+				continue;
+			if(this.collidesWith(enemys[i], false))
+			{
+				this.undo();
+				isCollide = true;
+				System.out.println("Collide With Enemy!");
+				break;
+			}
+		}
+		
+		if (collidesWith(player, false))
+		{
+			undo();
+			isCollide = true;
+		}
+		
+		return isCollide;
 		
 	}
 }
