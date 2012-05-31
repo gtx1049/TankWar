@@ -41,6 +41,7 @@ public class Shell extends MoveObject
 		if (type == Const.PLAYERFIRE)
 			for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 			{
+				//System.out.println("Player Fire");
 				if (this.collidesWith(enemy[i], true))
 				{
 					int enemyCode = i << 16;
@@ -49,7 +50,10 @@ public class Shell extends MoveObject
 			}
 		else if (type == Const.ENEMYFIRE)
 			if (this.collidesWith(player, true))
+			{
+				//System.out.println("Collide With Player");
 				return Const.COLLIDEWITHPLAYER;
+			}
 		
 		this.doAction();
 		return -1;

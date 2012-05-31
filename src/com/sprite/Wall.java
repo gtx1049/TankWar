@@ -10,13 +10,29 @@ public class Wall extends Sprite
 
 	int status;
 	
-	public Wall(Image image, int frameWidth, int frameHeight)
+	int i;
+	int j;
+	
+	int type;
+	
+	public Wall(Image image, int frameWidth, int frameHeight, int type, int i, int j)
 	{
 		super(image, frameWidth, frameHeight);
-		// TODO Auto-generated constructor stub
+
 		status = 0;
+		this.type = type;
 	}
 	
+	
+	
+	public int getI() {
+		return i;
+	}
+
+	public int getJ() {
+		return j;
+	}
+
 	public boolean beBroken(int direction)
 	{
 		if(status != 0)

@@ -17,6 +17,7 @@ public class SceneManager extends LayerManager
 	
 	public int getCenterX(){
 		return (left + width) >> 1;
+		
 	}
 	
 	public int getCenterY(){

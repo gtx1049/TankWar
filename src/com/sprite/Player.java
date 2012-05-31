@@ -8,6 +8,10 @@ import com.game.Const;
 public class Player extends Tank
 {
 	
+	int type = Const.NORMALCANNON;
+	
+	boolean isUnbeatable = false;
+	
 	public Player(Image image, int frameWidth, int frameHeight, int speed, Image imgshell)
 	{
 		super(image, frameWidth, frameHeight, imgshell);
@@ -18,7 +22,41 @@ public class Player extends Tank
 		// TODO Auto-generated constructor stub
 	}
 	
+	public void getItem(int itemType)
+	{
+		switch (itemType)
+		{
+		case Const.SUPERCANNON:
+			setFrame(1);
+			type = Const.SUPERCANNON;
+			break;
+		case Const.UNBEATABLE:
+			if (type == Const.NORMALCANNON)
+				setFrame(2);
+			else if (type == Const.SUPERCANNON)
+				setFrame(3);
+			
+			isUnbeatable = true;
+			
+			break;
+			
+		}
+	}
 	
+	public void backToNormal()
+	{
+		if (type == Const.SUPERCANNON)
+			setFrame(1);
+		else
+			setFrame(0);
+		
+		isUnbeatable = false;
+	}
+	
+	public boolean isUnbeatable() {
+		return isUnbeatable;
+	}
+
 	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, int[] spritecount)
 	{
 		

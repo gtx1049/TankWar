@@ -71,25 +71,25 @@ public class Tank extends MoveObject
 		{
 		case Const.UP:
 			preCordinate = getX();
-			System.out.println(getX()+","+getY());
+//			System.out.println(getX()+","+getY());
 			setTransform(TRANS_NONE);
 			setPosition(preCordinate, getY());
 			break;
 		case Const.DOWN:
 			preCordinate = getX();
-			System.out.println(getX()+","+getY());
+//			System.out.println(getX()+","+getY());
 			setTransform(TRANS_ROT180);
 			setPosition(preCordinate, getY());
 			break;
 		case Const.RIGHT:
 			preCordinate = getY();
-			System.out.println(getX()+","+getY());
+//			System.out.println(getX()+","+getY());
 			setTransform(TRANS_ROT90);
 			setPosition(getX(), preCordinate);
 			break;
 		case Const.LEFT:
 			preCordinate = getY();
-			System.out.println(getX()+","+getY());
+//			System.out.println(getX()+","+getY());
 			setTransform(TRANS_ROT270);
 			setPosition(getX(), preCordinate);
 			break;

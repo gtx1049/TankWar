@@ -1,6 +1,10 @@
 package com.game;
 
+import java.util.Date;
+import java.util.Random;
+
 import com.sprite.Enemy;
+import com.sprite.Item;
 import com.sprite.Player;
 import com.sprite.Shell;
 import com.sprite.Wall;
@@ -21,8 +25,14 @@ public class MainLogicThread implements Runnable{
 	
 	private static int frameCount = 0;
 	
-	public MainLogicThread(int action, Shell[] shells, Enemy[] enemys, Wall[] walls, 
-						   int[] count,	Player player, SceneManager scene)
+	private Item item;
+	
+	private static int stopTime = 0;
+	private static int unbeatableTime = -1;
+	
+	private static boolean isRemoved = true;
+	
+	public MainLogicThread(int action, Shell[] shells, Enemy[] enemys, Wall[] walls, int[] count,	Player player, SceneManager scene, Item item)
 	{
 		this.action = action;
 		
@@ -34,6 +44,8 @@ public class MainLogicThread implements Runnable{
 		
 		this.scene = scene;
 		
+		this.item = item;
+		
 		spritecount = count;
 	}
 	
@@ -43,6 +55,8 @@ public class MainLogicThread implements Runnable{
 		for(int i = 0; i < spritecount[Const.SHELLCOUNT]; i++)
 		{
 			int dividecode = shells[i].judgeCollideAct(walls, enemys, player, shells, spritecount);
+			
+			//System.out.println("Divide code" + dividecode);
 			
 			//System.out.println("我是循环:" + i);
 			
@@ -59,8 +73,9 @@ public class MainLogicThread implements Runnable{
 			{
 				int index = dividecode >> 16;
 				//System.out.println("我是index:" + index);
-				dividecode = dividecode & 0x00001111;
-				//System.out.println("我是还原的分离码:" + dividecode);
+//				System.out.println("我是分离码:" + dividecode);
+				dividecode = dividecode & 0x0000FFFF;
+//				System.out.println("我是还原的分离码:" + dividecode);
 				if(dividecode == Const.COLLIDEWITHWALL)
 				{
 					int tempdirection = shells[i].getDirection();
@@ -75,20 +90,39 @@ public class MainLogicThread implements Runnable{
 				}
 				else if(dividecode == Const.COLLIDWITHTANK)
 				{
+					
+					if (enemys[index].getType() == Const.REDENEMY)
+					{
+						
+						if (!isRemoved)
+							removeItem();
+						
+						Random random = new Random(new Date().getTime());
+						isRemoved = true;
+						
+						item.setType(random.nextInt() % 4 + Const.SUPERCANNON);
+						//item.setType(Const.UNBEATABLE);
+						item.addItem(scene, random);
+						item.setReal(true);
+						
+					}
+					
 					boolean isOver = enemys[index].onHit();
 					
 					removeShell(shells[i]);
 					
-					System.out.println("Index : " + index);
-					
-					try{
 					if (isOver)
 						removeEnemy(enemys[index]);
-						System.out.println("Remove Finish");
-					}
-					catch (Exception e)
+					
+					i--;
+				}
+				else if (dividecode == Const.COLLIDEWITHPLAYER)
+				{
+					removeShell(shells[i]);
+					
+					if (!player.isUnbeatable())
 					{
-						e.printStackTrace();
+						
 					}
 					
 					i--;
@@ -102,9 +136,47 @@ public class MainLogicThread implements Runnable{
 		for(int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 		{
 			
+			if (stopTime != 0)
+			{
+				stopTime -= 1;
+				//System.out.println("Break!");
+				break;
+			}
+			
 			enemys[i].judgeCollideAct(walls, enemys, spritecount, player);
 			if (frameCount % 100 == 0)
 				enemys[i].onFire(scene, shells, spritecount, true);
+		}
+		
+		if (item.judgeCollideAct(player))
+		{
+			int itemType = item.getType();
+			
+			if (itemType == Const.SILENCE || itemType == Const.CLEAR)
+			{
+				if (itemType == Const.SILENCE)
+				{
+					stopTime = 300;
+					System.out.println("Silence");
+				}
+				else
+				{
+					for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
+					{
+						removeEnemy(enemys[i]);
+					}
+				}
+			}
+			else
+			{
+				if (itemType == Const.UNBEATABLE)
+					unbeatableTime = 300;
+				
+				player.getItem(item.getType());
+			}
+			
+			item.setReal(false);
+			removeItem();
 		}
 		
 		if(action == Const.MOVE)
@@ -130,6 +202,14 @@ public class MainLogicThread implements Runnable{
 			//System.out.println("firing");
 			player.onFire(scene, shells, spritecount, false);
 		}
+		
+		if (unbeatableTime == 0)
+		{
+			unbeatableTime = -1;
+			player.backToNormal();
+		}
+		else if (unbeatableTime > 0)
+			unbeatableTime--;
 		
 		if (frameCount == 1000)
 			frameCount = 0;
@@ -159,6 +239,11 @@ public class MainLogicThread implements Runnable{
 		}
 	}
 	
+	public void removeItem()
+	{
+		scene.remove(item);
+	}
+	
 	public void removeEnemy(Enemy enemyToRemove)
 	{
 		for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
@@ -181,6 +266,8 @@ public class MainLogicThread implements Runnable{
 		{
 			if(walltoremove.equals(walls[i]))
 			{
+				TankCanvas.tieldMap[walls[i].getI()][walls[i].getJ()] = true;
+				
 				scene.remove(walltoremove);
 				
 				walls[i] = walls[spritecount[Const.WALLCOUNT] - 1];

@@ -35,6 +35,11 @@ public class Enemy extends Tank
 		
 	}
 	
+	public int getType()
+	{
+		return type;
+	}
+	
 	public boolean onHit()
 	{
 		System.out.println("On Hit");
@@ -146,6 +151,9 @@ public class Enemy extends Tank
 			undo();
 			isCollide = true;
 		}
+		
+		if (isCollide)
+			count = 20;
 		
 		return isCollide;
 		
