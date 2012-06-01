@@ -5,6 +5,8 @@ import javax.microedition.lcdui.game.Sprite;
 
 import com.game.Const;
 
+//可动物件包括坦克，子弹
+
 public class MoveObject extends Sprite
 {
 
@@ -24,11 +26,13 @@ public class MoveObject extends Sprite
 		// TODO Auto-generated constructor stub
 	}
 	
+	//行动规则
 	public void doAction()
 	{
 		move();
 	}
 	
+	//移动范围
 	public void setMoveArea(int width, int height){
 		this.width = width;
 		this.height = height;
@@ -42,6 +46,7 @@ public class MoveObject extends Sprite
 		return isMoving;
 	}
 	
+	//感觉方向与速度走一步
 	public void move()
 	{
 			switch(direction)
@@ -65,6 +70,7 @@ public class MoveObject extends Sprite
 		}
 	}
 	
+	//悔步，当发生碰撞时，使用此函数回到原来位置
 	public void undo()
 	{
 		switch(direction)

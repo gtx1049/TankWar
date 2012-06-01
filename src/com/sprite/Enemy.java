@@ -14,9 +14,9 @@ public class Enemy extends Tank
 	
 	private int count = 0;
 
-	public Enemy(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, int type, int id)
+	public Enemy(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, Image imgexplosion, int type, int id)
 	{
-		super(image, frameWidth, frameHeight, imgshell);
+		super(image, frameWidth, frameHeight, imgshell, imgexplosion);
 		// TODO Auto-generated constructor stub
 		
 		this.speed = speed;
@@ -40,9 +40,10 @@ public class Enemy extends Tank
 		return type;
 	}
 	
+	//判断是否被击中
 	public boolean onHit()
 	{
-		System.out.println("On Hit");
+		//System.out.println("On Hit");
 		
 		if (type == Const.NORMALENEMY)
 			return true;
@@ -64,7 +65,8 @@ public class Enemy extends Tank
 		
 		return false;
 	}
-		
+	
+	//敌人AI每回要进行的动作
 	public void doAction()
 	{
 		if (count == 20)
@@ -94,6 +96,7 @@ public class Enemy extends Tank
 		count ++;
 	}
 	
+	//判断是否与传进的精灵以及四周发生了碰撞
 	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, int[] spritecount, Player player)
 	{
 		
@@ -128,7 +131,7 @@ public class Enemy extends Tank
 			{
 				this.undo();
 				isCollide = true;
-				System.out.println("Collide with wall");
+				//System.out.println("Collide with wall");
 				break;
 			}
 		}
@@ -141,7 +144,7 @@ public class Enemy extends Tank
 			{
 				this.undo();
 				isCollide = true;
-				System.out.println("Collide With Enemy!");
+				//System.out.println("Collide With Enemy!");
 				break;
 			}
 		}

@@ -4,6 +4,8 @@ import javax.microedition.lcdui.Image;
 
 import com.game.Const;
 
+//子弹类
+
 public class Shell extends MoveObject
 {
 	
@@ -17,6 +19,7 @@ public class Shell extends MoveObject
 		this.type = type;
 	}
 	
+	//子弹的碰撞非为敌人子弹和玩家子弹
 	public int judgeCollideAct(Wall[] walls, Enemy[] enemy, Player player, Shell[] shells, int[] spritecount)
 	{
 		if ( (getX() <= -10 && direction == Const.LEFT) || 

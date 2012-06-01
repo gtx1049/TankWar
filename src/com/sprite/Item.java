@@ -9,6 +9,7 @@ import javax.microedition.lcdui.game.Sprite;
 import com.game.Const;
 import com.game.TankCanvas;
 
+//道具精灵
 public class Item extends Sprite
 {
 
@@ -45,6 +46,7 @@ public class Item extends Sprite
 		}
 	}
 	
+	//道具是否存在
 	public void setReal(boolean isReal) {
 		this.isReal = isReal;
 	}
@@ -75,6 +77,7 @@ public class Item extends Sprite
 		}
 	}
 	
+	//根据矩阵的位置决定道具改放在何处，游戏地方不可放置
 	public void addItem(LayerManager scene, Random random)
 	{
 		int i = Math.abs(random.nextInt()) % Const.MAPSIZE;
@@ -91,6 +94,7 @@ public class Item extends Sprite
 		scene.insert(this, 0);
 	}
 	
+	//判断是否与玩家相撞
 	public boolean judgeCollideAct(Player player)
 	{
 		

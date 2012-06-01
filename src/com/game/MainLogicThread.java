@@ -9,6 +9,8 @@ import com.sprite.Player;
 import com.sprite.Shell;
 import com.sprite.Wall;
 
+//游戏逻辑的主线程类
+
 public class MainLogicThread implements Runnable{
 
 	private int action;
@@ -52,18 +54,22 @@ public class MainLogicThread implements Runnable{
 	
 	public void gameLogic()
 	{
+		//判断所有的子弹的动作
 		for(int i = 0; i < spritecount[Const.SHELLCOUNT]; i++)
 		{
+			//通过分离码，得到所碰撞的物体类型以及物体的序号。
 			int dividecode = shells[i].judgeCollideAct(walls, enemys, player, shells, spritecount);
 			
 			//System.out.println("Divide code" + dividecode);
 			
 			//System.out.println("我是循环:" + i);
 			
+			//什么也没有发生
 			if(dividecode == -1)
 			{
 				continue;
 			}
+			//出界后剔除子弹
 			if(dividecode == Const.OVERBOARDER)
 			{
 				removeShell(shells[i]);
@@ -88,9 +94,10 @@ public class MainLogicThread implements Runnable{
 					i--;
 					
 				}
+				//子弹装到坦克的逻辑
 				else if(dividecode == Const.COLLIDWITHTANK)
 				{
-					
+					//击中红色敌人，得到道具
 					if (enemys[index].getType() == Const.REDENEMY)
 					{
 						
@@ -107,35 +114,39 @@ public class MainLogicThread implements Runnable{
 						
 					}
 					
+					//判断敌人是否死亡
 					boolean isOver = enemys[index].onHit();
-					
+					//移除子弹
 					removeShell(shells[i]);
 					
+					//当敌人被击杀，载入到爆炸状态
 					if (isOver)
-						removeEnemy(enemys[index]);
-					
+						//removeEnemy(enemys[index]);
+						enemys[index].beExplosed();
+						
 					i--;
 				}
+				
+				//击中玩家的反应
 				else if (dividecode == Const.COLLIDEWITHPLAYER)
 				{
 					removeShell(shells[i]);
 					
 					if (!player.isUnbeatable())
 					{
-						
+						//player.beExplosed();
 					}
 					
 					i--;
 				}
-				
-				
+
 			}
 			
 		}
 		
 		for(int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 		{
-			
+			//遍历所有敌人进行动作，当被冻结时，定时器阻止敌人的动作
 			if (stopTime != 0)
 			{
 				stopTime -= 1;
@@ -143,11 +154,33 @@ public class MainLogicThread implements Runnable{
 				break;
 			}
 			
+			//爆炸动作，当爆炸结束时，移除敌人
+			if(enemys[i].getBeingexploesd())
+			{
+				if(!enemys[i].doExplosed())
+				{
+					removeEnemy(enemys[i]);
+					i--;
+				}
+				continue;
+			}
+			
+			//敌人的具体动作
 			enemys[i].judgeCollideAct(walls, enemys, spritecount, player);
 			if (frameCount % 100 == 0)
 				enemys[i].onFire(scene, shells, spritecount, true);
 		}
 		
+		//玩家的爆炸状态
+		if(player.getBeingexploesd())
+		{
+			if(!player.doExplosed())
+			{
+				//这里添加死亡代码
+			}
+		}
+		
+		//是否得到道具，分为定时，炸弹，无敌，超级大炮
 		if (item.judgeCollideAct(player))
 		{
 			int itemType = item.getType();
@@ -157,7 +190,7 @@ public class MainLogicThread implements Runnable{
 				if (itemType == Const.SILENCE)
 				{
 					stopTime = 300;
-					System.out.println("Silence");
+					//System.out.println("Silence");
 				}
 				else
 				{
@@ -179,6 +212,7 @@ public class MainLogicThread implements Runnable{
 			removeItem();
 		}
 		
+		//从TankCanvas传进的用来响应玩家的动作
 		if(action == Const.MOVE)
 		{
 			if (!player.judgeCollideAct(walls, enemys, spritecount))
@@ -197,6 +231,7 @@ public class MainLogicThread implements Runnable{
 					
 			}
 		}
+		//玩家控制开炮
 		else if(action == Const.FIRE)
 		{
 			//System.out.println("firing");
@@ -217,11 +252,12 @@ public class MainLogicThread implements Runnable{
 			frameCount++;
 	}
 	
-
+	//线程
 	public void run() {
 		gameLogic();
 	}
 	
+	//移除炮弹
 	public void removeShell(Shell shelltoremove)
 	{
 		for(int i = 0; i < spritecount[Const.SHELLCOUNT]; i++)
@@ -239,11 +275,13 @@ public class MainLogicThread implements Runnable{
 		}
 	}
 	
+	//移除道具
 	public void removeItem()
 	{
 		scene.remove(item);
 	}
 	
+	//移除敌人
 	public void removeEnemy(Enemy enemyToRemove)
 	{
 		for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
@@ -260,6 +298,7 @@ public class MainLogicThread implements Runnable{
 		}
 	}
 	
+	//移除墙
 	public void removeWall(Wall walltoremove)
 	{
 		for(int i = 0; i < spritecount[Const.WALLCOUNT]; i++)

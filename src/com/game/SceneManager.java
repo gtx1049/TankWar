@@ -2,6 +2,8 @@ package com.game;
 
 import javax.microedition.lcdui.game.LayerManager;
 
+//场景管理类
+
 public class SceneManager extends LayerManager
 {
 	private int left;
@@ -49,6 +51,7 @@ public class SceneManager extends LayerManager
 		super();
 	}
 	
+	//控制屏幕滚动的函数
 	public void move(int direction)
 	{
 		if ((!isXMoving && (direction == Const.LEFT || direction == Const.RIGHT) || (!isYMoving && (direction == Const.UP || direction == Const.DOWN))))

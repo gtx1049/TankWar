@@ -1,5 +1,7 @@
 package com.game;
 
+//常量类，所有的常量从这里提供
+
 public class Const
 {
 	public static final int MAPSIZE = 15;

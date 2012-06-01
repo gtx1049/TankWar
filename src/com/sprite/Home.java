@@ -3,6 +3,7 @@ package com.sprite;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
 
+//老家的精灵
 public class Home extends Sprite
 {
 

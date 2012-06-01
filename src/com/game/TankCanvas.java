@@ -25,7 +25,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 	private TiledLayer background;
 	private SceneManager scene;
 	
-	private int status;
+	//private int status;
 	
 	private int width;
 	private int height;
@@ -44,7 +44,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 	private Image imgwall;
 	private Image imghardwall;
 	private Image imghome;
-	private Image imgexplsion;
+	private Image imgexplosion;
 	private Image imgenemy;
 	private Image imgItem;
 	
@@ -58,6 +58,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 		// TODO Auto-generated constructor st ub
 		graphics = this.getGraphics();
 		
+		//加载图片
 		try
 		{
 			imgplayer   = Image.createImage("/player.png");
@@ -66,9 +67,9 @@ public class TankCanvas extends GameCanvas implements Runnable
 			imgwall     = Image.createImage("/wall.png");
 			imghardwall = Image.createImage("/hardwall.png");
 			imghome     = Image.createImage("/home.png");
-			imgexplsion = Image.createImage("/explosion.png");
+			imgexplosion = Image.createImage("/explosion.png");
 			imgenemy    = Image.createImage("/enemy.png");
-			imgItem = Image.createImage("/items.png");
+			imgItem     = Image.createImage("/items.png");
 		}
 		catch (IOException e)
 		{
@@ -83,11 +84,12 @@ public class TankCanvas extends GameCanvas implements Runnable
 		//加载地图和精灵
 		
 		background = new TiledLayer(15, 15, imglandform, Const.GRIDSIZE, Const.GRIDSIZE);
-		player = new Player(imgplayer, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell);
+		player = new Player(imgplayer, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, imgexplosion);
 		walls = new Wall[100];
 		enemys = new Enemy[100];
 		shells = new Shell[100];
 		
+		//初始化精灵计数器
 		for(int i =0; i < 3; i++)
 		{
 			spritecount[0] = 0;
@@ -105,15 +107,6 @@ public class TankCanvas extends GameCanvas implements Runnable
 		
 		layerManagerX = 60;
 		layerManagerY = 68;
-		
-//		Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, Const.NORMALENEMY);
-//		e.setMoveArea(background.getWidth(), background.getHeight());
-//		e.setPosition(3 * Const.GRIDSIZE, 3 * Const.GRIDSIZE);
-//		e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
-////		enemys.addElement(e);
-//		enemys[spritecount[Const.ENEMYCOUNT]] = e;
-//		spritecount[Const.ENEMYCOUNT]++;
-//		scene.append(e);
 		
 		//显示这个图层
 		scene.append(background);
@@ -147,6 +140,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				e.printStackTrace();
 			}
 			
+			//将图像打在屏幕上
 			scene.paint(graphics, 0, 0);
 			flushGraphics();
 		}
@@ -219,7 +213,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				else if(map[i][j] == Const.REDENEMY)
 				{
 					background.setCell(j, i, 1);
-					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, Const.REDENEMY, spritecount[Const.ENEMYCOUNT]);
+					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, imgexplosion, Const.REDENEMY, spritecount[Const.ENEMYCOUNT]);
 					e.setMoveArea(background.getWidth(), background.getHeight());
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(0);
@@ -233,7 +227,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				else if(map[i][j] == Const.NORMALENEMY)
 				{
 					background.setCell(j, i, 1);
-					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, Const.GREENENEMY, spritecount[Const.ENEMYCOUNT]);
+					Enemy e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, imgexplosion, Const.GREENENEMY, spritecount[Const.ENEMYCOUNT]);
 					e.setMoveArea(background.getWidth(), background.getHeight());
 					e.setPosition(j * Const.GRIDSIZE, i * Const.GRIDSIZE);
 					e.setFrame(1);

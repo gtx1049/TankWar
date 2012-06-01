@@ -6,6 +6,7 @@ import javax.microedition.midlet.MIDletStateChangeException;
 
 public class TankWar extends MIDlet
 {
+	//µØÍ¼Êý×é
 	int[][] map1 = 
 	{
 		{4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},

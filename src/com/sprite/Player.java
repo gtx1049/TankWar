@@ -5,6 +5,8 @@ import javax.microedition.lcdui.Image;
 
 import com.game.Const;
 
+//玩家类
+
 public class Player extends Tank
 {
 	
@@ -12,9 +14,9 @@ public class Player extends Tank
 	
 	boolean isUnbeatable = false;
 	
-	public Player(Image image, int frameWidth, int frameHeight, int speed, Image imgshell)
+	public Player(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, Image imgexplosion)
 	{
-		super(image, frameWidth, frameHeight, imgshell);
+		super(image, frameWidth, frameHeight, imgshell, imgexplosion);
 		
 		this.speed = speed;
 		this.direction = Const.UP;
@@ -22,6 +24,7 @@ public class Player extends Tank
 		// TODO Auto-generated constructor stub
 	}
 	
+	//得到道具时的反应
 	public void getItem(int itemType)
 	{
 		switch (itemType)
@@ -43,6 +46,7 @@ public class Player extends Tank
 		}
 	}
 	
+	//返回普通状态
 	public void backToNormal()
 	{
 		if (type == Const.SUPERCANNON)
@@ -53,10 +57,12 @@ public class Player extends Tank
 		isUnbeatable = false;
 	}
 	
+	//无敌
 	public boolean isUnbeatable() {
 		return isUnbeatable;
 	}
-
+	
+	//判断相撞并进行动作
 	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, int[] spritecount)
 	{
 		
