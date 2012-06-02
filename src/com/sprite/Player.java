@@ -10,8 +10,6 @@ import com.game.Const;
 public class Player extends Tank
 {
 	
-	int type = Const.NORMALCANNON;
-	
 	boolean isUnbeatable = false;
 	
 	public Player(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, Image imgexplosion)
@@ -31,12 +29,12 @@ public class Player extends Tank
 		{
 		case Const.SUPERCANNON:
 			setFrame(1);
-			type = Const.SUPERCANNON;
+			fireType = Const.SUPERCANNON;
 			break;
 		case Const.UNBEATABLE:
-			if (type == Const.NORMALCANNON)
+			if (fireType == Const.NORMALCANNON)
 				setFrame(2);
-			else if (type == Const.SUPERCANNON)
+			else if (fireType == Const.SUPERCANNON)
 				setFrame(3);
 			
 			isUnbeatable = true;
@@ -49,7 +47,7 @@ public class Player extends Tank
 	//·µ»ØÆÕÍ¨×´Ì¬
 	public void backToNormal()
 	{
-		if (type == Const.SUPERCANNON)
+		if (fireType == Const.SUPERCANNON)
 			setFrame(1);
 		else
 			setFrame(0);
@@ -92,7 +90,7 @@ public class Player extends Tank
 		
 		for(int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 		{
-			if(this.collidesWith(enemys[i], false))
+			if(this.collidesWith(enemys[i], false) && !enemys[i].getBeingexploesd())
 			{
 				this.undo();
 				isCollide = true;

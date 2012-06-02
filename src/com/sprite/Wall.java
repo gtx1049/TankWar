@@ -25,8 +25,22 @@ public class Wall extends Sprite
 		this.type = type;
 	}
 	
+	
+	
 	//这里得到墙的格子位置
 	
+	public int getType() {
+		return type;
+	}
+
+
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+
+
 	public int getI() {
 		return i;
 	}

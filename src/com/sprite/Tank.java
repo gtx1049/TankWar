@@ -16,12 +16,16 @@ public class Tank extends MoveObject
 	private boolean beingexplosed;
 	private int explosioncount;
 	
+	protected int fireType;
+	
 	public Tank(Image image, int frameWidth, int frameHeight, Image img, Image aimgexplosion)
 	{
 		super(image, frameWidth, frameHeight);
 		// TODO Auto-generated constructor stub
 		this.imgshell = img;
 		this.imgexplosion = aimgexplosion;
+		
+		this.fireType = Const.NORMALCANNON;
 		
 		beingexplosed = false;
 		explosioncount = 25;
@@ -32,7 +36,7 @@ public class Tank extends MoveObject
 	{
 		int shellType = isEnemy? Const.ENEMYFIRE : Const.PLAYERFIRE;
 		
-		Shell s = new Shell(imgshell, Const.GRIDSIZE, Const.GRIDSIZE, this.getDirection(), shellType);
+		Shell s = new Shell(imgshell, Const.GRIDSIZE, Const.GRIDSIZE, this.getDirection(), shellType, fireType);
 		
 		if (isEnemy)
 			s.setFrame(1);

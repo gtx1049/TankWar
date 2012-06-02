@@ -9,16 +9,26 @@ import com.game.Const;
 public class Shell extends MoveObject
 {
 	
+	private int tank;
 	private int type;
 
-	public Shell(Image image, int frameWidth, int frameHeight, int direction, int type)
+	public Shell(Image image, int frameWidth, int frameHeight, int direction, int tank, int type)
 	{
 		super(image, frameWidth, frameHeight);
 		this.speed = Const.SHELLSPEED;
 		this.direction = direction;
+		this.tank = tank;
 		this.type = type;
 	}
 	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	//子弹的碰撞非为敌人子弹和玩家子弹
 	public int judgeCollideAct(Wall[] walls, Enemy[] enemy, Player player, Shell[] shells, int[] spritecount)
 	{
@@ -41,7 +51,7 @@ public class Shell extends MoveObject
 			}
 		}
 		
-		if (type == Const.PLAYERFIRE)
+		if (tank == Const.PLAYERFIRE)
 			for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 			{
 				//System.out.println("Player Fire");
@@ -51,7 +61,7 @@ public class Shell extends MoveObject
 					return Const.COLLIDWITHTANK + enemyCode;
 				}
 			}
-		else if (type == Const.ENEMYFIRE)
+		else if (tank == Const.ENEMYFIRE)
 			if (this.collidesWith(player, true))
 			{
 				//System.out.println("Collide With Player");

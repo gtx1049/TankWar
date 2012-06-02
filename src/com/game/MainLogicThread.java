@@ -54,6 +54,7 @@ public class MainLogicThread implements Runnable{
 	
 	public void gameLogic()
 	{
+		
 		//判断所有的子弹的动作
 		for(int i = 0; i < spritecount[Const.SHELLCOUNT]; i++)
 		{
@@ -85,12 +86,17 @@ public class MainLogicThread implements Runnable{
 				if(dividecode == Const.COLLIDEWITHWALL)
 				{
 					int tempdirection = shells[i].getDirection();
-					removeShell(shells[i]);
-					//返回false，说明墙已经被彻底破坏
-					if(!walls[index].beBroken(tempdirection))
+					
+					if (!(walls[index].getType() == Const.HARDBRICK && shells[i].getType() != Const.SUPERCANNON))
 					{
-						removeWall(walls[index]);
+						//返回false，说明墙已经被彻底破坏
+						if(!walls[index].beBroken(tempdirection))
+						{
+							removeWall(walls[index]);
+						}
 					}
+					
+					removeShell(shells[i]);
 					i--;
 					
 				}
@@ -107,8 +113,11 @@ public class MainLogicThread implements Runnable{
 						Random random = new Random(new Date().getTime());
 						isRemoved = true;
 						
-						item.setType(random.nextInt() % 4 + Const.SUPERCANNON);
-						//item.setType(Const.UNBEATABLE);
+						item.setType(Math.abs(random.nextInt() % 4) + Const.SUPERCANNON);
+						
+						System.out.println("Item Type:" + item.getType());
+						
+						//item.setType(Const.SILENCE);
 						item.addItem(scene, random);
 						item.setReal(true);
 						
@@ -134,7 +143,7 @@ public class MainLogicThread implements Runnable{
 					
 					if (!player.isUnbeatable())
 					{
-						//player.beExplosed();
+						player.beExplosed();
 					}
 					
 					i--;
@@ -145,15 +154,7 @@ public class MainLogicThread implements Runnable{
 		}
 		
 		for(int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
-		{
-			//遍历所有敌人进行动作，当被冻结时，定时器阻止敌人的动作
-			if (stopTime != 0)
-			{
-				stopTime -= 1;
-				//System.out.println("Break!");
-				break;
-			}
-			
+		{	
 			//爆炸动作，当爆炸结束时，移除敌人
 			if(enemys[i].getBeingexploesd())
 			{
@@ -164,6 +165,13 @@ public class MainLogicThread implements Runnable{
 				}
 				continue;
 			}
+			
+			//遍历所有敌人进行动作，当被冻结时，定时器阻止敌人的动作
+			if (stopTime != 0)
+			{
+				//System.out.println("Break!");
+				continue;
+			}			
 			
 			//敌人的具体动作
 			enemys[i].judgeCollideAct(walls, enemys, spritecount, player);
@@ -176,7 +184,7 @@ public class MainLogicThread implements Runnable{
 		{
 			if(!player.doExplosed())
 			{
-				//这里添加死亡代码
+				scene.remove(player);
 			}
 		}
 		
@@ -196,7 +204,7 @@ public class MainLogicThread implements Runnable{
 				{
 					for (int i = 0; i < spritecount[Const.ENEMYCOUNT]; i++)
 					{
-						removeEnemy(enemys[i]);
+						enemys[i].beExplosed();
 					}
 				}
 			}
@@ -250,6 +258,9 @@ public class MainLogicThread implements Runnable{
 			frameCount = 0;
 		else
 			frameCount++;
+		
+		if (stopTime > 0)
+			stopTime -= 1;
 	}
 	
 	//线程

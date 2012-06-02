@@ -24,9 +24,13 @@ public class Enemy extends Tank
 		
 		this.type = type;
 		
-		if (type == Const.GREENENEMY)
+		if (type == Const.GREENENEMY || type == Const.NORMALENEMY)
 		{
-			setFrame(2);
+			setFrame(1);
+		}
+		else if (type == Const.REDENEMY)
+		{
+			setFrame(0);
 		}
 		
 		Date date = new Date();
@@ -96,6 +100,7 @@ public class Enemy extends Tank
 		count ++;
 	}
 	
+	
 	//判断是否与传进的精灵以及四周发生了碰撞
 	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, int[] spritecount, Player player)
 	{
@@ -106,21 +111,25 @@ public class Enemy extends Tank
 		
 		if (getX() <= -2 && direction == Const.LEFT)
 		{
+			isCollide = true;
 			undo();
 			return true;
 		}
 		if (getY() <= -2 && direction == Const.UP)
 		{
+			isCollide = true;
 			undo();
 			return true;
 		}
 		if (getX() + getWidth() >= this.width + 1 && direction == Const.RIGHT)
 		{
+			isCollide = true;
 			undo();
 			return true;
 		}
 		if (getY() + getHeight() >= this.height + 1 && direction == Const.DOWN)
 		{
+			isCollide = true;
 			undo();
 			return true;		
 		}
