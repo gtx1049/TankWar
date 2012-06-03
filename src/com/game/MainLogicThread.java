@@ -130,8 +130,10 @@ public class MainLogicThread implements Runnable{
 					
 					//当敌人被击杀，载入到爆炸状态
 					if (isOver)
+					{
 						//removeEnemy(enemys[index]);
 						enemys[index].beExplosed();
+					}
 						
 					i--;
 				}

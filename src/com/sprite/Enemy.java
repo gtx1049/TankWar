@@ -14,6 +14,8 @@ public class Enemy extends Tank
 	
 	private int count = 0;
 
+	private int birthTime = 20;
+	
 	public Enemy(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, Image imgexplosion, int type, int id)
 	{
 		super(image, frameWidth, frameHeight, imgshell, imgexplosion);
@@ -33,6 +35,8 @@ public class Enemy extends Tank
 			setFrame(0);
 		}
 		
+		count = 20;
+		
 		Date date = new Date();
 		
 		random = new Random(date.getTime() + id);
@@ -44,10 +48,17 @@ public class Enemy extends Tank
 		return type;
 	}
 	
+	public void setBirthTime(int time)
+	{
+		this.birthTime = time;
+	}
+	
 	//ÅÐ¶ÏÊÇ·ñ±»»÷ÖÐ
 	public boolean onHit()
 	{
 		//System.out.println("On Hit");
+		
+		System.out.println("Type : " + type);
 		
 		if (type == Const.NORMALENEMY)
 			return true;
@@ -105,33 +116,40 @@ public class Enemy extends Tank
 	public boolean judgeCollideAct(Wall[] walls, Enemy[] enemys, int[] spritecount, Player player)
 	{
 		
+		
 		boolean isCollide = false;
 		
 		this.doAction();
 		
 		if (getX() <= -2 && direction == Const.LEFT)
 		{
-			isCollide = true;
+			count = 20;
 			undo();
 			return true;
 		}
 		if (getY() <= -2 && direction == Const.UP)
 		{
-			isCollide = true;
+			count = 20;
 			undo();
 			return true;
 		}
 		if (getX() + getWidth() >= this.width + 1 && direction == Const.RIGHT)
 		{
-			isCollide = true;
+			count = 20;
 			undo();
 			return true;
 		}
 		if (getY() + getHeight() >= this.height + 1 && direction == Const.DOWN)
 		{
-			isCollide = true;
+			count = 20;
 			undo();
 			return true;		
+		}
+		
+		if (birthTime != 0)
+		{
+			birthTime--;
+			return false;
 		}
 		
 		for(int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
@@ -151,17 +169,40 @@ public class Enemy extends Tank
 				continue;
 			if(this.collidesWith(enemys[i], false))
 			{
-				this.undo();
-				isCollide = true;
+				System.out.println("First Tank Position : " + getCenterX() + "," + getCenterY());
+				System.out.println("Second Tank Position : " + enemys[i].getCenterX() + "," + enemys[i].getCenterY());
+				
+				
+				if (!( Math.sqrt(((getCenterX() - enemys[i].getCenterX()) * (getCenterX() - enemys[i].getCenterX()) + 
+						(getCenterY() - enemys[i].getCenterY()) * (getCenterY() - enemys[i].getCenterY()))) < Const.GRIDSIZE / 4)) 
+				{
+					this.undo();
+					isCollide = true;
+					break;
+				}
+				else
+				{
+					if (direction - enemys[i].getDirection() == 0)
+						this.birthTime = 5;
+				}
+				
 				//System.out.println("Collide With Enemy!");
-				break;
 			}
 		}
 		
 		if (collidesWith(player, false))
 		{
-			undo();
-			isCollide = true;
+			if (!( Math.sqrt(((getCenterX() - player.getCenterX()) * (getCenterX() - player.getCenterX()) + 
+					(getCenterY() - player.getCenterY()) * (getCenterY() - player.getCenterY()))) < Const.GRIDSIZE / 2)) 
+			{
+				undo();
+				isCollide = true;
+			}
+			else
+			{
+				this.birthTime = 5;
+			}
+		
 		}
 		
 		if (isCollide)

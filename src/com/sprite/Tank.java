@@ -79,6 +79,16 @@ public class Tank extends MoveObject
 		im.insert(s, 0);
 	}
 	
+	public int getCenterX()
+	{
+		return (getX() + Const.GRIDSIZE) / 2;
+	}
+	
+	public int getCenterY()
+	{
+		return (getY() + Const.GRIDSIZE) / 2;
+	}
+	
 	public void setDirection(int direction) 
 	{
 		//²âÊÔ´úÂë

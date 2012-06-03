@@ -28,7 +28,6 @@ public class TankCanvas extends GameCanvas implements Runnable
 		public int y;
 	}
 	
-	
 	private Player player;
 	private Enemy[] enemys;
 	private Shell[] shells;
@@ -68,7 +67,6 @@ public class TankCanvas extends GameCanvas implements Runnable
 	public Point[] startPoints = new Point[3];
 	
 	private int tankCount = 3;
-	private int gameTime = 0;
 	
 	public TankCanvas(boolean suppressKeyEvents, int[][] map)
 	{
@@ -145,10 +143,8 @@ public class TankCanvas extends GameCanvas implements Runnable
 		while(onrun)
 		{
 			
-			if (gameTime == 10 && tankCount != 22)
+			if (spritecount[Const.ENEMYCOUNT] < 3 && tankCount != 22)
 			{
-				gameTime = 0;
-				tankCount ++;
 				
 				int index = tankCount % 3;
 				
@@ -156,7 +152,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				if (tankCount % 6 == 0)
 					e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, imgexplosion, Const.REDENEMY, spritecount[Const.ENEMYCOUNT]);
 				else 
-					e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, imgexplosion, Const.NORMALENEMY, spritecount[Const.ENEMYCOUNT]);
+					e = new Enemy(imgenemy, Const.GRIDSIZE, Const.GRIDSIZE, Const.TANKSPEED, imgshell, imgexplosion, Const.GREENENEMY, spritecount[Const.ENEMYCOUNT]);
 				
 				background.setCell(startPoints[index].y, startPoints[index].x, 1);
 				
@@ -165,7 +161,9 @@ public class TankCanvas extends GameCanvas implements Runnable
 				e.defineReferencePixel(Const.GRIDSIZE >> 1, Const.GRIDSIZE >> 1);
 				enemys[spritecount[Const.ENEMYCOUNT]] = e;
 				spritecount[Const.ENEMYCOUNT]++;
-				scene.append(e);
+				scene.insert(e, 0);
+				
+				tankCount ++;
 				
 			}
 			
@@ -181,8 +179,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			gameTime++;
+
 			
 			//将图像打在屏幕上
 			scene.paint(graphics, 0, 0);
