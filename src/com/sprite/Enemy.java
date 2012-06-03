@@ -58,7 +58,7 @@ public class Enemy extends Tank
 	{
 		//System.out.println("On Hit");
 		
-		System.out.println("Type : " + type);
+		//System.out.println("Type : " + type);
 		
 		if (type == Const.NORMALENEMY)
 			return true;
@@ -169,8 +169,8 @@ public class Enemy extends Tank
 				continue;
 			if(this.collidesWith(enemys[i], false))
 			{
-				System.out.println("First Tank Position : " + getCenterX() + "," + getCenterY());
-				System.out.println("Second Tank Position : " + enemys[i].getCenterX() + "," + enemys[i].getCenterY());
+				//System.out.println("First Tank Position : " + getCenterX() + "," + getCenterY());
+				//System.out.println("Second Tank Position : " + enemys[i].getCenterX() + "," + enemys[i].getCenterY());
 				
 				
 				if (!( Math.sqrt(((getCenterX() - enemys[i].getCenterX()) * (getCenterX() - enemys[i].getCenterX()) + 
