@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Random;
 
 import com.sprite.Enemy;
+import com.sprite.Home;
 import com.sprite.Item;
 import com.sprite.Player;
 import com.sprite.Shell;
@@ -20,6 +21,7 @@ public class MainLogicThread implements Runnable{
 	private Wall[] walls;
 	
 	private Player player;
+	private Home home;
 	
 	private SceneManager scene;
 	
@@ -34,7 +36,10 @@ public class MainLogicThread implements Runnable{
 	
 	private static boolean isRemoved = true;
 	
-	public MainLogicThread(int action, Shell[] shells, Enemy[] enemys, Wall[] walls, int[] count,	Player player, SceneManager scene, Item item)
+	public static boolean isgameover;
+	
+	public MainLogicThread(int action, Shell[] shells, Enemy[] enemys, Wall[] walls, int[] count,	
+					       Player player, SceneManager scene, Item item, Home home)
 	{
 		this.action = action;
 		
@@ -47,7 +52,7 @@ public class MainLogicThread implements Runnable{
 		this.scene = scene;
 		
 		this.item = item;
-		
+		this.home = home;
 		spritecount = count;
 	}
 	
@@ -68,6 +73,13 @@ public class MainLogicThread implements Runnable{
 			//什么也没有发生
 			if(dividecode == -1)
 			{
+
+				if(home.collidesWith(shells[i], true))
+				{
+					home.beExplosed();
+					removeShell(shells[i]);
+					i--;
+				}
 				continue;
 			}
 			//出界后剔除子弹
@@ -115,7 +127,7 @@ public class MainLogicThread implements Runnable{
 						
 						item.setType(Math.abs(random.nextInt() % 4) + Const.SUPERCANNON);
 						
-						System.out.println("Item Type:" + item.getType());
+						//System.out.println("Item Type:" + item.getType());
 						
 						//item.setType(Const.SILENCE);
 						item.addItem(scene, random);
@@ -146,11 +158,11 @@ public class MainLogicThread implements Runnable{
 					if (!player.isUnbeatable())
 					{
 						player.beExplosed();
+						//isgameover = true;
 					}
 					
 					i--;
-				}
-
+				}								
 			}
 			
 		}
@@ -164,6 +176,7 @@ public class MainLogicThread implements Runnable{
 				{
 					removeEnemy(enemys[i]);
 					i--;
+					TankCanvas.killtank++;
 				}
 				continue;
 			}
@@ -186,7 +199,16 @@ public class MainLogicThread implements Runnable{
 		{
 			if(!player.doExplosed())
 			{
-				scene.remove(player);
+				scene.remove(player);			
+				isgameover = true;
+			}
+		}
+		
+		if(home.getBeingexploesd())
+		{
+			if(!home.doExplosed())
+			{
+				isgameover = true;
 			}
 		}
 		

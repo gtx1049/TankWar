@@ -2,6 +2,10 @@ package com.game;
 
 import java.io.IOException;
 
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.GameCanvas;
@@ -68,6 +72,10 @@ public class TankCanvas extends GameCanvas implements Runnable
 	
 	private int tankCount = 3;
 	
+	public static int killtank = 0;
+	
+	private Command exitCommand;
+	
 	public TankCanvas(boolean suppressKeyEvents, int[][] map)
 	{
 		super(suppressKeyEvents);
@@ -96,6 +104,9 @@ public class TankCanvas extends GameCanvas implements Runnable
 		width = getWidth();
 		height = getHeight();
 
+		exitCommand = new Command("退出", Command.EXIT, 0);
+		this.addCommand(exitCommand);
+		this.setCommandListener(new Cmdlistener());
 		
 		//加载地图和精灵
 		
@@ -111,7 +122,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 			spritecount[0] = 0;
 		}
 		
-		home = new Home(imghome, Const.GRIDSIZE, Const.GRIDSIZE);
+		home = new Home(imghome, Const.GRIDSIZE, Const.GRIDSIZE, imgexplosion);
 
 		scene = new SceneManager(60, 68, background.getWidth(), background.getHeight(), width, height);
 		
@@ -142,6 +153,25 @@ public class TankCanvas extends GameCanvas implements Runnable
 		// TODO Auto-generated method stub
 		while(onrun)
 		{
+			if(MainLogicThread.isgameover)
+			{
+				graphics.setFont(Font.getFont(0, Font.FACE_SYSTEM, Font.SIZE_LARGE));
+				graphics.setColor(255, 0, 0);
+				graphics.drawString("你已经死了", width / 2 - 30, height / 2 - 10, 0);
+				graphics.drawString("请重新来过", width / 2 - 30, height / 2 , 0);
+				flushGraphics();
+				continue;
+			}
+			
+			if(tankCount == 21)
+			{
+				graphics.setFont(Font.getFont(0, Font.FACE_SYSTEM, Font.SIZE_LARGE));
+				graphics.setColor(255, 0, 0);
+				graphics.drawString("你太厉害了", width / 2 - 30, height / 2 - 10, 0);
+				graphics.drawString("全歼了敌人", width / 2 - 30, height / 2 , 0);
+				flushGraphics();
+				continue;
+			}
 			
 			if (spritecount[Const.ENEMYCOUNT] < 3 && tankCount != 22)
 			{
@@ -171,7 +201,7 @@ public class TankCanvas extends GameCanvas implements Runnable
 			int action = playerControl();
 			
 			//游戏逻辑控制
-			new Thread(new MainLogicThread(action,shells, enemys, walls, spritecount, player, scene, item)).start();
+			new Thread(new MainLogicThread(action,shells, enemys, walls, spritecount, player, scene, item, home)).start();
 			
 			try {
 				Thread.sleep(0);
@@ -356,6 +386,21 @@ public class TankCanvas extends GameCanvas implements Runnable
 		}
 		
 		return Const.COLD;
+		
+	}
+	
+	class Cmdlistener implements CommandListener
+	{
+
+		public void commandAction(Command arg0, Displayable arg1)
+		{
+			// TODO Auto-generated method stub
+			if(arg0 == exitCommand)
+			{
+				onrun = false;
+				TankWar.display.setCurrent(TankWar.mainForm);
+			}
+		}
 		
 	}
 }

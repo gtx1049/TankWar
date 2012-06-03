@@ -41,7 +41,7 @@ public class Const
 	public static final int ISOVER = 26;
 	public static final int ISCOMPLETE = 27;
 	
-	public static final int TANKSPEED = 2;
+	public static final int TANKSPEED = 1;
 	public static final int SHELLSPEED = 3;
 	
 	public static final int MOVE = 0;

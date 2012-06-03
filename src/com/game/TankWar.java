@@ -31,10 +31,10 @@ public class TankWar extends MIDlet implements CommandListener
 		{4, 4, 4, 4, 4, 0, 5, 3, 5, 4, 4, 4, 4, 4, 4}
 	};
 	
-	private Display display;
+	static public Display display;
 	private TankCanvas tankcanvas;
 	
-	private Form mainForm;
+	static public Form mainForm;
 	
 	private Command exit;
 	private Command startGame;
@@ -90,6 +90,7 @@ public class TankWar extends MIDlet implements CommandListener
 		}
 		else if (command == startGame)
 		{
+			MainLogicThread.isgameover = false;
 			tankcanvas = new TankCanvas(true, map1);
 			Display.getDisplay(this).setCurrent(tankcanvas);
 		}
