@@ -1,10 +1,14 @@
 package com.game;
 
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Form;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
-public class TankWar extends MIDlet
+public class TankWar extends MIDlet implements CommandListener
 {
 
 	//地图数组
@@ -30,15 +34,31 @@ public class TankWar extends MIDlet
 	private Display display;
 	private TankCanvas tankcanvas;
 	
+	private Form mainForm;
+	
+	private Command exit;
+	private Command startGame;
+	
 	public TankWar()
 	{
+		mainForm = new Form("Tank War");
+		
+		exit = new Command("退出", Command.EXIT, 0);
+		startGame = new Command("开始游戏", Command.ITEM, 1);
+		
+		mainForm.addCommand(exit);
+		mainForm.addCommand(startGame);
+		mainForm.append("Tank War");
+		
+		
+		mainForm.setCommandListener(this);
+		
 		display = Display.getDisplay(this);
-		tankcanvas = new TankCanvas(true, map1);
 	}
 	
 	protected void destroyApp(boolean arg0) throws MIDletStateChangeException
 	{
-		// TODO Auto-generated method stub
+		notifyDestroyed();
 		
 	}
 
@@ -51,7 +71,29 @@ public class TankWar extends MIDlet
 	protected void startApp() throws MIDletStateChangeException
 	{
 		// TODO Auto-generated method stub
-		display.setCurrent(tankcanvas);
+		//display.setCurrent(tankcanvas);
+		display.setCurrent(mainForm);
+	}
+
+	public void commandAction(Command command, Displayable arg1) {
+		if (command == exit)
+		{
+			try
+			{
+				destroyApp(true);
+			}
+			catch (MIDletStateChangeException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}
+		else if (command == startGame)
+		{
+			tankcanvas = new TankCanvas(true, map1);
+			Display.getDisplay(this).setCurrent(tankcanvas);
+		}
+		
 	}
 
 }
