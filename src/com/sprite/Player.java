@@ -12,6 +12,8 @@ public class Player extends Tank
 	
 	boolean isUnbeatable = false;
 	
+	private int floatTime;
+	
 	public Player(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, Image imgexplosion)
 	{
 		super(image, frameWidth, frameHeight, imgshell, imgexplosion);
@@ -22,6 +24,20 @@ public class Player extends Tank
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	
+	public int getFloatTime() {
+		return floatTime;
+	}
+
+
+
+	public void setFloatTime(int floatTime) {
+		this.floatTime = floatTime;
+	}
+
+
+
 	//得到道具时的反应
 	public void getItem(int itemType)
 	{
@@ -77,6 +93,12 @@ public class Player extends Tank
 		
 		
 		this.doAction();
+		
+		if (floatTime != 0)
+		{
+			floatTime --;
+			return false;
+		}
 		
 		for(int i = 0; i < spritecount[Const.WALLCOUNT]; i++)
 		{

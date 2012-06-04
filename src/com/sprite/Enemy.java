@@ -14,7 +14,7 @@ public class Enemy extends Tank
 	
 	private int count = 0;
 
-	private int birthTime = 20;
+	private int birthTime = 15;
 	
 	public Enemy(Image image, int frameWidth, int frameHeight, int speed, Image imgshell, Image imgexplosion, int type, int id)
 	{
@@ -200,7 +200,10 @@ public class Enemy extends Tank
 			}
 			else
 			{
-				this.birthTime = 5;
+				if (this.birthTime > 10)
+				{
+					player.setFloatTime(5);
+				}
 			}
 		
 		}
